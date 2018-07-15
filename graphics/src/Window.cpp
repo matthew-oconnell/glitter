@@ -9,12 +9,15 @@ using namespace Glitter;
 using namespace Graphics;
 
 Window::Window(std::string title, int width, int height)
-    : name(std::move(title)), window_handle(glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr)){
+    : name(std::move(title)),
+      window_handle(glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr)),
+      width(width), height(height){
   if(window_handle == nullptr)
     throw std::logic_error("Could not create some glfw window: " + title);
   glfwMakeContextCurrent(window_handle);
   glfwSetWindowSizeCallback(window_handle, window_resize_callback);
   glfwSetKeyCallback(window_handle, key_callback);
+  glfwSetMouseButtonCallback(window_handle, mouse_button_callback);
   glfwSetCursorPosCallback(window_handle, cursor_position_callback);
   glfwSetWindowUserPointer(window_handle, (void*)this);
   for (bool &keyboard_key : keyboard_keys)
@@ -49,12 +52,22 @@ void Window::key_callback(GLFWwindow *window, int key, int scancode, int action,
   else if(action == GLFW_RELEASE)
     my_window->keyboard_keys[key] = false;
 }
+void Window::mouse_button_callback(GLFWwindow *window, int button, int action, int mods) {
+  auto my_window = static_cast<Window*>(glfwGetWindowUserPointer(window));
+  if(action == GLFW_PRESS)
+    my_window->mouse_buttons[button] = true;
+  else if(action == GLFW_RELEASE)
+    my_window->mouse_buttons[button] = false;
+}
 void Window::cursor_position_callback(GLFWwindow *window, double x, double y) {
   auto my_window = static_cast<Window*>(glfwGetWindowUserPointer(window));
+  my_window->mouse_x = (float)x;
+  my_window->mouse_y = (float)y;
 }
 void Window::window_resize_callback(GLFWwindow *window, int width, int height) {
   auto my_window = static_cast<Window*>(glfwGetWindowUserPointer(window));
-  glViewport(0, 0, width, height);
+  my_window->width = width;
+  my_window->height = height;
 }
 bool Window::isKeyPressed(unsigned int keycode) const {
   if(keycode > MAX_KEYBOARD_KEYS)
@@ -65,4 +78,16 @@ bool Window::isMouseButtonPressed(unsigned int button_code) const {
   if(button_code > MAX_MOUSE_BUTTONS)
     return false;
   return mouse_buttons[button_code];
+}
+float Window::getCursorX() const {
+  return mouse_x;
+}
+float Window::getCursorY() const {
+  return mouse_y;
+}
+int Window::getWidth() const {
+  return width;
+}
+int Window::getHeight() const {
+  return height;
 }
