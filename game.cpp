@@ -25,12 +25,14 @@ int main() {
 void loop(Glitter::Graphics::Window& game_window) {
   while(!game_window.closed()){
     game_window.clear();
-//    glBegin(GL_TRIANGLES);
-//    glVertex2f(-0.5f, -0.5f);
-//    glVertex2f( 0.5f,  0.5f);
-//    glVertex2f( 0.5f, -0.5f);
-//    glEnd();
-    glDrawArrays(GL_ARRAY_BUFFER, 0, 6);
+    if(game_window.isKeyPressed(GLFW_KEY_W)) {
+      glBegin(GL_TRIANGLES);
+      glVertex2f(-0.5f, -0.5f);
+      glVertex2f( 0.5f,  0.5f);
+      glVertex2f( 0.5f, -0.5f);
+      glEnd();
+    }
+//    glDrawArrays(GL_ARRAY_BUFFER, 0, 6);
     game_window.update();
   }
 }
