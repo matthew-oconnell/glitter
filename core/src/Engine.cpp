@@ -12,18 +12,9 @@ using namespace Core;
 
 Engine::Engine(std::string title, int width, int height)
     : name(std::move(title)),
-      window_handle(glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr)),
-      width(width), height(height){
-  if(window_handle == nullptr)
-    throw std::logic_error("Could not create some glfw window: " + title);
-  glfwMakeContextCurrent(window_handle);
-  glfwSetWindowSizeCallback(window_handle, window_resize_callback);
-  glfwSetWindowUserPointer(window_handle, (void*)this);
-  if( glewInit() != GLEW_OK){
-    std::cout<<"could not initialize glew" << std::endl;
-    exit(1);
-  }
-  input = std::make_shared<Input>(window_handle);
+      width(width), height(height),
+      window_handle(createWindow(title, width, height)),
+      input(std::make_shared<Input>(window_handle)), glew_context(){
 }
 Engine::~Engine() {
   glfwDestroyWindow(window_handle);
@@ -74,4 +65,14 @@ void Engine::loop() {
     }
     update();
   }
+}
+GLFWwindow *Engine::createWindow(std::string title, int width, int height) {
+  auto window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
+  if(window == nullptr)
+    throw std::logic_error("Could not create some glfw window: " + title);
+
+  glfwMakeContextCurrent(window);
+  glfwSetWindowSizeCallback(window, window_resize_callback);
+  glfwSetWindowUserPointer(window, (void*)this);
+  return window;
 }

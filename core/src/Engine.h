@@ -2,6 +2,7 @@
 #include <memory>
 #include <string>
 #include <array>
+#include "GlewContext.h"
 struct GLFWwindow;
 
 namespace Glitter {
@@ -22,10 +23,14 @@ class Engine {
   void clear();
  private:
   std::string name;
-  GLFWwindow *window_handle;
   int width, height;
+  GLFWwindow *window_handle;
   std::shared_ptr<Input> input;
+  GlewContext glew_context;
   static void window_resize_callback(GLFWwindow* window, int width, int height);
+
+
+  GLFWwindow* createWindow(std::string title, int width, int height);
 
 };
 }
