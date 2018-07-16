@@ -24,5 +24,9 @@ namespace Glitter {
             return Vec2d{this->x - rhs.x, this->y - rhs.y};
         }
     };
+    inline std::ostream& operator<<(std::ostream& stream, const Vec2d& obj) {
+        stream<<obj.x<<" "; stream<<obj.y;
+        return stream;
+    }
   }
 }

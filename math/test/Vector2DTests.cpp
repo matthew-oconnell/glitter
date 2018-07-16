@@ -1,5 +1,6 @@
 #include <catch.hpp>
 #include <Vector2d.h>
+#include <iostream>
 
 using namespace Glitter;
 using namespace Math;
@@ -38,4 +39,9 @@ TEST_CASE("Vector2d subtraction"){
     auto v = a-b;
     REQUIRE(v.x == 0.0f);
     REQUIRE(v.y == 6.0f);
+}
+
+TEST_CASE("Can output vec"){
+    Vec2d a{1.0f, 0.1f};
+    std::cout << a << std::endl;
 }
