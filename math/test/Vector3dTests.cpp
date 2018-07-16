@@ -44,7 +44,7 @@ TEST_CASE("Vector3d subtraction") {
     REQUIRE(v.z == 0.0f);
 }
 
-TEST_CASE("Can output vec"){
+TEST_CASE("Can output vec3d"){
     Vec3d a{1.0f, 0.1f, 0.2f};
     std::cout << a << std::endl;
 }
