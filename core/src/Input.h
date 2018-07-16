@@ -1,3 +1,4 @@
+#pragma once
 #include <array>
 #include <GLFW/glfw3.h>
 

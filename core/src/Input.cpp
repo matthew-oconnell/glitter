@@ -13,7 +13,6 @@ Input::Input(GLFWwindow *window) : window(window){
   for (bool &mouse_button : mouse_buttons)
     mouse_button = false;
 }
-
 void Input::key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
   auto input = static_cast<Engine*>(glfwGetWindowUserPointer(window))->getInput();
   if(action == GLFW_PRESS)
