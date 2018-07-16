@@ -1,11 +1,11 @@
-#include "First.h"
+#include "ControllablePlayer.h"
 using namespace Glitter;
 using namespace Player;
 
-First::First(Input* input)
+ControllablePlayer::ControllablePlayer(Glitter::Player::Input* input)
         :input(input){
 }
-Glitter::Math::Vec2d First::acceleration() {
+Glitter::Math::Vec2d ControllablePlayer::acceleration() const {
     Math::Vec2d a{0,0};
     if(input->pressed(Glitter::Player::Input::KEYS::W))
         a += Math::Vec2d{0.0f, 1.0f};
@@ -17,6 +17,6 @@ Glitter::Math::Vec2d First::acceleration() {
         a += Math::Vec2d{0.0f, -1.0f};
     return a;
 }
-float First::mass() {
+float ControllablePlayer::mass() const {
     return 1.0;
 }

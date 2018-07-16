@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-set(SOURCES AllTests.cpp PlayerTests.cpp MockInput.cpp MockInput.h)
+set(SOURCES AllTests.cpp ControllablePlayerTests.cpp MockInput.cpp MockInput.h IdiotTests.cpp)
 
 add_executable(PlayerTests ${SOURCES})
 target_link_libraries(PlayerTests PRIVATE Glitter::Player Catch2::Catch2)

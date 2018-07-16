@@ -1,5 +1,5 @@
 #include <catch.hpp>
-#include <First.h>
+#include <ControllablePlayer.h>
 #include "MockInput.h"
 #include <Vector2d.h>
 
@@ -7,14 +7,14 @@ using namespace Glitter;
 using namespace Player;
 using namespace Math;
 
-TEST_CASE("First Exists"){
+TEST_CASE("ControllablePlayer Exists"){
     MockInput input;
-    First player(&input);
+    ControllablePlayer player(&input);
 }
 
 TEST_CASE("Player move"){
     MockInput input;
-    First player(&input);
+    ControllablePlayer player(&input);
 
     input.press(Glitter::Player::Input::W);
 
@@ -25,7 +25,7 @@ TEST_CASE("Player move"){
 
 TEST_CASE("Players have mass"){
     MockInput input;
-    First player(&input);
+    ControllablePlayer player(&input);
 
     float f = player.mass();
     REQUIRE(f == 1.0f);
