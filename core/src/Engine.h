@@ -12,6 +12,7 @@ class Input;
 class Engine {
  public:
   Engine(std::string title, int width, int height);
+  void loop();
   void update();
   bool closed();
   Input* getInput();
@@ -24,7 +25,6 @@ class Engine {
   GLFWwindow *window_handle;
   int width, height;
   std::shared_ptr<Input> input;
-  //GLFW callback methods
   static void window_resize_callback(GLFWwindow* window, int width, int height);
 
 };
