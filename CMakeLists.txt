@@ -7,9 +7,10 @@ add_subdirectory(third-party/catch)
 add_subdirectory(third-party/glfw-3.2.1)
 add_subdirectory(third-party/glew-2.1.0/build/cmake)
 
-add_subdirectory(core)
+add_subdirectory(math)
 add_subdirectory(utils)
 add_subdirectory(graphics)
+add_subdirectory(core)
 
 add_executable(Game game.cpp game.cpp)
 target_include_directories(Game PRIVATE ${GLEW_INCLUDE_DIRS})
