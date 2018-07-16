@@ -25,6 +25,7 @@ class Engine {
   std::shared_ptr<Window> window;
   std::shared_ptr<Input> input;
   GlewContext glew_context;
+  void drawStupiderCursor();
 };
 }
 }
