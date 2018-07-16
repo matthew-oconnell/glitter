@@ -5,6 +5,7 @@
 #include <iostream>
 #include "Engine.h"
 #include "Input.h"
+#include <Shader.h>
 
 using namespace Glitter;
 using namespace Core;
@@ -23,7 +24,6 @@ Engine::Engine(std::string title, int width, int height)
     exit(1);
   }
   input = std::make_shared<Input>(window_handle);
-  std::cout << "OpeGL " << glGetString(GL_VERSION) << std::endl;
 }
 Engine::~Engine() {
   glfwDestroyWindow(window_handle);
@@ -72,8 +72,6 @@ void Engine::loop() {
       glVertex2f( 0.1f+x_percent, -0.1f+y_percent);
       glEnd();
     }
-//    glDrawArrays(GL_ARRAY_BUFFER, 0, 6);
     update();
   }
-
 }
