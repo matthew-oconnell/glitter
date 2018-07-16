@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 
 namespace Glitter {
   namespace Math {
@@ -23,6 +24,12 @@ namespace Glitter {
         inline Vec2d operator-(Vec2d rhs){
             return Vec2d{this->x - rhs.x, this->y - rhs.y};
         }
+
+        inline void operator+=(Vec2d rhs){
+            this->x += rhs.x;
+            this->y += rhs.y;
+        }
+
     };
     inline std::ostream& operator<<(std::ostream& stream, const Vec2d& obj) {
         stream<<obj.x<<" "; stream<<obj.y;

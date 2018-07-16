@@ -10,7 +10,7 @@ void finalize();
 int main() {
   initialize();
 
-  Glitter::Core::Engine engine("Glitter", 800, 600);
+  Glitter::Core::Engine engine("Glitter", 1280, 720);
   glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
 
   engine.loop();
