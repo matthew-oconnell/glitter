@@ -2,7 +2,7 @@
 
 #include <Vector2d.h>
 #include <Model.h>
-
+#include <utility>
 namespace Glitter {
   namespace Player {
     class Player {
@@ -12,7 +12,7 @@ namespace Glitter {
 
         void setModel(std::shared_ptr<Graphics::Model> m);
         Graphics::Model* getModel();
-        void render(Math::Vec2d screen_location);
+        void render();
         void setWorldLocation(Math::Vec2d location);
         Math::Vec2d getWorldLocation() const;
     private:
@@ -27,11 +27,11 @@ namespace Glitter {
         return location;
     }
     inline void Player::setModel(std::shared_ptr<Graphics::Model> m) {
-        model = m;
+        model = std::move(m);
     }
-    inline void Player::render(Math::Vec2d screen_location) {
+    inline void Player::render(){
         if(model != nullptr)
-            model->render(screen_location);
+            model->render(location);
     }
     inline Graphics::Model *Player::getModel() {
       if(model != nullptr)

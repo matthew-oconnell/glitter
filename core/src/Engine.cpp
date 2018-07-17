@@ -53,7 +53,7 @@ void Engine::loop() {
       auto model = p->getModel();
       auto [lo, hi] = model->getBounds();
       if(screen.onScreen(lo, hi))
-        p->render(p->getWorldLocation());
+        p->render();
     }
     update();
   }
