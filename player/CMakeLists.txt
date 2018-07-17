@@ -5,7 +5,7 @@ set(SOURCES src/ControllablePlayer.cpp src/ControllablePlayer.h src/Input.h src/
 add_library(Player STATIC ${SOURCES})
 add_library(Glitter::Player ALIAS Player)
 target_include_directories(Player PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
-target_link_libraries(Player PUBLIC Glitter::Math)
+target_link_libraries(Player PUBLIC Glitter::Math Glitter::Graphics)
 
 
 add_subdirectory(test)

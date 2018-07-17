@@ -32,7 +32,6 @@ TEST_CASE("Vector2d addition"){
     REQUIRE(v.x == 100.0f);
     REQUIRE(v.y ==  24.0f);
 }
-
 TEST_CASE("Vector2d addition"){
     Vec2d a{50.0f, 12.0f};
     Vec2d b{50.0f, 12.0f};
@@ -48,6 +47,15 @@ TEST_CASE("Vector2d subtraction"){
     REQUIRE(v.x == 0.0f);
     REQUIRE(v.y == 6.0f);
 }
+
+TEST_CASE("Vector2d multiply by scalar"){
+    Vec2d a{50.0f, 12.0f};
+    auto v = a*0.5f;
+    REQUIRE(v.x == 25.0f);
+    REQUIRE(v.y ==  6.0f);
+
+}
+
 
 TEST_CASE("Can output vec"){
     Vec2d a{1.0f, 0.1f};

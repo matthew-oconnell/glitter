@@ -6,6 +6,8 @@
 #include "Engine.h"
 #include "Input.h"
 #include <Shader.h>
+#include <Square.h>
+#include <cmath>
 
 using namespace Glitter;
 using namespace Core;
@@ -15,6 +17,8 @@ Engine::Engine(std::string title, int width, int height)
       window(std::make_shared<Window>(title, width, height)),
       input(std::make_shared<Input>(window->getGLFWHandle())), glew_context(){
   glfwSetWindowUserPointer(window->getGLFWHandle(), (void*)this);
+  game_start = std::chrono::system_clock::now();
+  beginning_of_last_frame = game_start;
 }
 void Engine::update() {
   window->update();
@@ -29,11 +33,22 @@ Input* Engine::getInput() {
   return input.get();
 }
 void Engine::loop() {
+  float pi = 4.0*atan(1.0f);
+  float frequency = 0.2f; // 1 rotation per second.
+
   while(!closed()){
+    auto now = std::chrono::system_clock::now();
+    auto game_time = std::chrono::duration_cast<std::chrono::milliseconds>(now - game_start).count();
     clear();
     Glitter::Core::Input* input = getInput();
     if(! (input->isKeyPressed(GLFW_KEY_W) || input->isMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT))) {
       drawStupiderCursor();
+    }
+    for(auto& p : players){
+      float game_time_in_seconds = game_time/1000.0;
+      auto loc = Math::Vec2d{1.0f, 1.0f}*0.5f*std::cos(2.0*pi*frequency*game_time_in_seconds);
+      p->setWorldLocation(loc);
+      p->render(p->getWorldLocation());
     }
     update();
   }
@@ -57,4 +72,7 @@ void Engine::drawStupiderCursor(){
   glVertex2f(-0.02f+x_percent, -0.1f+y_percent);
   glVertex2f( 0.02f+x_percent, -0.1f+y_percent);
   glEnd();
+}
+void Engine::addPlayer(std::shared_ptr<Player::Player> p) {
+    players.emplace_back(std::move(p));
 }

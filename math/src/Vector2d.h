@@ -21,6 +21,10 @@ namespace Glitter {
             return Vec2d{this->x + rhs.x, this->y + rhs.y};
         }
 
+        inline Vec2d operator*(float f){
+            return Vec2d{this->x*f, this->y*f};
+        }
+
         inline Vec2d operator-(Vec2d rhs){
             return Vec2d{this->x - rhs.x, this->y - rhs.y};
         }

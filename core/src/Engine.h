@@ -2,6 +2,8 @@
 #include <memory>
 #include <string>
 #include <array>
+#include <Player.h>
+#include <vector>
 #include "GlewContext.h"
 #include "Window.h"
 struct GLFWwindow;
@@ -15,6 +17,7 @@ class Engine {
  public:
   Engine(std::string title, int width, int height);
   void loop();
+  void addPlayer(std::shared_ptr<Player::Player> p);
   void update();
   bool closed();
   Input* getInput();
@@ -25,6 +28,9 @@ class Engine {
   std::shared_ptr<Window> window;
   std::shared_ptr<Input> input;
   GlewContext glew_context;
+  std::chrono::system_clock::time_point game_start;
+  std::chrono::system_clock::time_point beginning_of_last_frame;
+  std::vector<std::shared_ptr<Player::Player>> players;
   void drawStupiderCursor();
 };
 }

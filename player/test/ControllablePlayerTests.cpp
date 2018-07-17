@@ -26,7 +26,6 @@ TEST_CASE("Player move"){
 TEST_CASE("Players have mass"){
     MockInput input;
     ControllablePlayer player(&input);
-
     float f = player.mass();
     REQUIRE(f == 1.0f);
 }
