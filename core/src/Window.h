@@ -1,11 +1,12 @@
 #pragma once
 #include <string>
 #include <GLFW/glfw3.h>
+#include <Screen.h>
 namespace Glitter {
 namespace Core {
 class Window {
  public:
-  Window(std::string title, int width, int height);
+  Window(Screen * screen, std::string title, int width, int height);
   ~Window();
   GLFWwindow* getGLFWHandle();
   void update();
@@ -17,6 +18,7 @@ class Window {
   int width;
   int height;
   GLFWwindow *window_handle;
+  Screen* screen;
 
   static void window_resize_callback(GLFWwindow* window, int width, int height);
 };

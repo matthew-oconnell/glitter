@@ -11,6 +11,7 @@ namespace Glitter {
         virtual float mass() const = 0;
 
         void setModel(std::shared_ptr<Graphics::Model> m);
+        Graphics::Model* getModel();
         void render(Math::Vec2d screen_location);
         void setWorldLocation(Math::Vec2d location);
         Math::Vec2d getWorldLocation() const;
@@ -31,6 +32,11 @@ namespace Glitter {
     inline void Player::render(Math::Vec2d screen_location) {
         if(model != nullptr)
             model->render(screen_location);
+    }
+    inline Graphics::Model *Player::getModel() {
+      if(model != nullptr)
+        return model.get();
+      return nullptr;
     }
   }
 }

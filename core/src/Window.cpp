@@ -6,8 +6,8 @@ using namespace Core;
 Window::~Window() {
   glfwDestroyWindow(window_handle);
 }
-Window::Window(std::string title, int width, int height)
-    : title(title), width(width), height(height){
+Window::Window(Screen* screen, std::string title, int width, int height)
+    : screen(screen), title(title), width(width), height(height){
 
   window_handle = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
   if(window_handle == nullptr)
@@ -21,6 +21,7 @@ void Window::window_resize_callback(GLFWwindow *window, int width, int height) {
   auto w = static_cast<Engine*>(glfwGetWindowUserPointer(window))->getWindow();
   w->width = width;
   w->height = height;
+  w->screen->setWorldLocationRange({0.0f, 0.0f}, {float(width), float(height)});
 }
 GLFWwindow *Window::getGLFWHandle() {
   return window_handle;

@@ -14,11 +14,13 @@ using namespace Core;
 
 Engine::Engine(std::string title, int width, int height)
     : name(std::move(title)),
-      window(std::make_shared<Window>(title, width, height)),
-      input(std::make_shared<Input>(window->getGLFWHandle())), glew_context(){
+      screen(),
+      window(std::make_shared<Window>(&screen, title, width, height)),
+      input(std::make_shared<Input>(window->getGLFWHandle())),
+      glew_context(){
   glfwSetWindowUserPointer(window->getGLFWHandle(), (void*)this);
   game_start = std::chrono::system_clock::now();
-  beginning_of_last_frame = game_start;
+  screen.setWorldLocationRange({0.0f, 0.0f}, {float(width), float(height)});
 }
 void Engine::update() {
   window->update();
@@ -33,7 +35,7 @@ Input* Engine::getInput() {
   return input.get();
 }
 void Engine::loop() {
-  float pi = 4.0*atan(1.0f);
+  float pi = 4.0f*atan(1.0f);
   float frequency = 0.2f; // 1 rotation per second.
 
   while(!closed()){
@@ -45,10 +47,13 @@ void Engine::loop() {
       drawStupiderCursor();
     }
     for(auto& p : players){
-      float game_time_in_seconds = game_time/1000.0;
-      auto loc = Math::Vec2d{1.0f, 1.0f}*0.5f*std::cos(2.0*pi*frequency*game_time_in_seconds);
+      float game_time_in_seconds = float(game_time)/1000.0f;
+      auto loc = Math::Vec2d{1.0f, 1.0f}*0.5f*std::cos(2.0f*pi*frequency*game_time_in_seconds);
       p->setWorldLocation(loc);
-      p->render(p->getWorldLocation());
+      auto model = p->getModel();
+      auto [lo, hi] = model->getBounds();
+      if(screen.onScreen(lo, hi))
+        p->render(p->getWorldLocation());
     }
     update();
   }

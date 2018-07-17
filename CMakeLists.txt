@@ -9,6 +9,7 @@ add_subdirectory(third-party/glew-2.1.0/build/cmake)
 
 add_subdirectory(player)
 add_subdirectory(math)
+add_subdirectory(screen)
 add_subdirectory(utils)
 add_subdirectory(graphics)
 add_subdirectory(core)
