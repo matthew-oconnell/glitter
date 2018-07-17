@@ -8,6 +8,7 @@
 #include <Shader.h>
 #include <Square.h>
 #include <cmath>
+#include <Map.h>
 
 using namespace Glitter;
 using namespace Core;
@@ -36,8 +37,9 @@ Input* Engine::getInput() {
 }
 void Engine::loop() {
   float pi = 4.0f*atan(1.0f);
-  float frequency = 0.2f; // 1 rotation per second.
+  float frequency = 0.2f;
 
+  World::Map map(100, 100);
   while(!closed()){
     auto now = std::chrono::system_clock::now();
     auto game_time = std::chrono::duration_cast<std::chrono::milliseconds>(now - game_start).count();
@@ -55,6 +57,7 @@ void Engine::loop() {
       if(screen.onScreen(lo, hi))
         p->render();
     }
+    map.render();
     update();
   }
 }
