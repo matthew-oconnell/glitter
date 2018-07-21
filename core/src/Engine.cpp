@@ -24,7 +24,7 @@ Engine::Engine(std::string title, int width, int height)
       glew_context(){
   glfwSetWindowUserPointer(window->getGLFWHandle(), (void*)this);
   game_start = std::chrono::system_clock::now();
-  float pixels_per_meter = 40.0f;
+  float pixels_per_meter = 90.0f;
   screen.setScreenScale(pixels_per_meter);
   screen.windowResize(window->getWidth(), window->getHeight());
 }
@@ -94,7 +94,11 @@ void Engine::spawnRandomEnemy() {
   static std::random_device rd;
   static std::mt19937 gen(rd());
   auto enemy = std::make_shared<Player::Enemy>();
-  enemy->setModel(std::make_shared<Graphics::Square>(0.6f, 0.6f));
+  std::uniform_real_distribution color_distribution(0.0, 1.0);
+  std::array<GLfloat, 4> color={float(color_distribution(gen)),
+                                float(color_distribution(gen)),
+                                float(color_distribution(gen)), 1.0f};
+  enemy->setModel(std::make_shared<Graphics::Square>(0.6f, 0.6f, color));
   auto [lo, hi] = screen.rangeInWorldCoordinates();
   std::uniform_real_distribution x_distribution(lo.x, hi.x);
   std::uniform_real_distribution y_distribution(lo.y, hi.y);
@@ -109,7 +113,6 @@ void Engine::collidePlayersWithEnemies() {
   for(auto& p : players){
     for(auto e_iter = enemies.begin(); e_iter != enemies.end();){
       if(collide(p.get(), e_iter->get())){
-        std::cout << "Player eats enemy!" << std::endl;
         e_iter = enemies.erase(e_iter);
       } else {
         ++e_iter;
