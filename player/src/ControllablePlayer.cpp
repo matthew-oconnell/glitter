@@ -6,7 +6,7 @@ ControllablePlayer::ControllablePlayer(Glitter::Player::Input* input)
         :input(input){
 }
 void ControllablePlayer::update() {
-    float speed = 0.02f;
+    float speed = 0.5f;
     Math::Vec2d a{0,0};
     if(input->pressed(Glitter::Player::Input::KEYS::W))
         a += Math::Vec2d{0.0, speed};

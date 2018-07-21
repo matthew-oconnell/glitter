@@ -11,7 +11,7 @@ namespace Glitter {
 
         void setModel(std::shared_ptr<Graphics::Model> m);
         Graphics::Model* getModel();
-        void render();
+        void render(Screen* s);
         void setWorldLocation(Math::Vec2d location);
         Math::Vec2d getWorldLocation() const;
     protected:
@@ -28,9 +28,9 @@ namespace Glitter {
     inline void Player::setModel(std::shared_ptr<Graphics::Model> m) {
         model = std::move(m);
     }
-    inline void Player::render(){
+    inline void Player::render(Screen* screen){
         if(model != nullptr)
-            model->render(world_location);
+            model->render(world_location, screen);
     }
     inline Graphics::Model *Player::getModel() {
       if(model != nullptr)

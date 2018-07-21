@@ -21,7 +21,9 @@ Engine::Engine(std::string title, int width, int height)
       glew_context(){
   glfwSetWindowUserPointer(window->getGLFWHandle(), (void*)this);
   game_start = std::chrono::system_clock::now();
-  screen.setWorldLocationRange({0.0f, 0.0f}, {float(width), float(height)});
+  float screen_scale = 0.1f;
+  screen.setScreenScale(screen_scale);
+  screen.windowResize(window->getWidth(), window->getHeight());
 }
 void Engine::update() {
   window->update();
@@ -47,9 +49,10 @@ void Engine::loop() {
     for(auto& p : players){
       auto model = p->getModel();
       auto [lo, hi] = model->getBounds();
-      if(screen.onScreen(lo, hi))
-        p->render();
-      p->update();
+      if(screen.onScreen(lo, hi)) {
+        p->update();
+        p->render(&screen);
+      }
     }
     update();
   }
@@ -67,11 +70,14 @@ void Engine::drawStupiderCursor(){
   float y = input->getCursorY();
   float width = float(window->getWidth());
   float height = float(window->getHeight());
-  float x_percent = (2.0f*x / width) - 1.0f;
-  float y_percent = -(2.0f*y / height) + 1.0f;
-  glVertex2f( 0.0f+x_percent,  0.0f+y_percent);
-  glVertex2f(-0.02f+x_percent, -0.1f+y_percent);
-  glVertex2f( 0.02f+x_percent, -0.1f+y_percent);
+  float x_percent = x / width;
+  float y_percent = y / height;
+  float screen_x = (2.0f*x_percent) - 1.0f;
+  float screen_y = -(2.0f*y_percent) + 1.0f;
+//  std::cout << x << " " << y << "  " <<  screen_x << " " << screen_y << std::endl;
+  glVertex2f( 0.0f+screen_x,  0.0f+screen_y);
+  glVertex2f(-0.02f+screen_x, -0.1f+screen_y);
+  glVertex2f( 0.02f+screen_x, -0.1f+screen_y);
   glEnd();
 }
 void Engine::addPlayer(std::shared_ptr<Player::Player> p) {

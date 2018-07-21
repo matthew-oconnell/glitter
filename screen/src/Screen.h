@@ -4,9 +4,12 @@
 namespace Glitter {
 class Screen {
  public:
-  void setWorldLocationRange(Math::Vec2d lo, Math::Vec2d hi);
+  void setScreenScale(float scale);
+  void windowResize(int width, int height);
+  Math::Vec2d convertToScreenCoords(const Math::Vec2d& world_coords);
   bool onScreen(Math::Vec2d lo, Math::Vec2d hi);
  private:
+  float scale = 1.0;
   Math::Vec2d world_location_lo;
   Math::Vec2d world_location_hi;
 };

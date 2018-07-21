@@ -4,8 +4,8 @@ Glitter::World::Voxel::Voxel(Glitter::Math::Vec2d world_lo, Glitter::Math::Vec2d
     : world_lo(world_lo), world_hi(world_hi), s(1.0, 1.0, color){
 
 }
-void Glitter::World::Voxel::render() {
-  s.render((world_lo + world_hi)*0.5);
+void Glitter::World::Voxel::render(Screen* screen) {
+  s.render((world_lo + world_hi)*0.5, screen);
 }
 
 Glitter::World::Map::Map(int voxels_wide, int voxels_high)
@@ -25,8 +25,8 @@ Glitter::World::Map::Map(int voxels_wide, int voxels_high)
     }
   }
 }
-void Glitter::World::Map::render() {
+void Glitter::World::Map::render(Screen* screen) {
   for(auto& voxel_pair : voxels){
-    voxel_pair.second.render();
+    voxel_pair.second.render(screen);
   }
 }

@@ -21,7 +21,8 @@ void Window::window_resize_callback(GLFWwindow *window, int width, int height) {
   auto w = static_cast<Engine*>(glfwGetWindowUserPointer(window))->getWindow();
   w->width = width;
   w->height = height;
-  w->screen->setWorldLocationRange({0.0f, 0.0f}, {float(width), float(height)});
+  w->screen->windowResize(width, height);
+  glViewport(0, 0, width, height);
 }
 GLFWwindow *Window::getGLFWHandle() {
   return window_handle;
