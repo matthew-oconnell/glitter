@@ -35,6 +35,8 @@ class Engine {
   std::chrono::system_clock::time_point game_start;
   std::vector<std::shared_ptr<Player::Player>> players;
   void drawStupiderCursor();
+  void spawnEnemies(std::chrono::milliseconds game_time);
+  void spawnRandomEnemy();
 };
 }
 }

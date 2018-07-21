@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
-set(SOURCES src/ControllablePlayer.cpp src/ControllablePlayer.h src/Input.h src/Idiot.cpp src/Idiot.h src/Player.h)
+set(SOURCES src/ControllablePlayer.cpp src/ControllablePlayer.h
+        src/Input.h src/Idiot.cpp src/Idiot.h src/Player.h src/Enemy.cpp src/Enemy.h)
 
 add_library(Player STATIC ${SOURCES})
 add_library(Glitter::Player ALIAS Player)
