@@ -42,6 +42,8 @@ class Engine {
   void spawnRandomEnemy();
   void collidePlayersWithEnemies();
   bool collide(Player::Player *p, Player::Player *e);
+  void drawCursor();
+  void render();
 };
 }
 }

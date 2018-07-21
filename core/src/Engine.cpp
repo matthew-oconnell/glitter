@@ -30,6 +30,10 @@ Engine::Engine(std::string title, int width, int height)
 }
 void Engine::update() {
   window->update();
+  for(auto& e : enemies)
+    e->update();
+  for(auto& p : players)
+    p->update();
 }
 bool Engine::closed() {
   return window->closed();
@@ -45,25 +49,11 @@ void Engine::loop() {
   while(!closed()){
     auto now = std::chrono::system_clock::now();
     auto game_time = std::chrono::duration_cast<std::chrono::milliseconds>(now - game_start);
-    spawnEnemies(game_time);
-    clear();
-    Glitter::Core::GLFWInput* input = getInput();
-    if(!input->pressed(Player::Input::KEYS::W))
-      drawStupiderCursor();
-    collidePlayersWithEnemies();
-    for(auto& e : enemies){
-      auto [lo, hi] = e->getBoundsWorld();
-      e->update();
-      if(screen.onScreen(lo, hi))
-        e->render(&screen);
-    }
-    for(auto& p : players){
-      auto [lo, hi] = p->getBoundsWorld();
-      p->update();
-      if(screen.onScreen(lo, hi))
-        p->render(&screen);
-    }
     update();
+    spawnEnemies(game_time);
+    collidePlayersWithEnemies();
+    clear();
+    render();
   }
 }
 Window* Engine::getWindow() {
@@ -131,4 +121,22 @@ bool Engine::collide(Player::Player *p, Player::Player *e) {
   auto p_bounds = p->getBoundsWorld();
   auto e_bounds = e->getBoundsWorld();
   return Math::AABB::intersect(e_bounds, p_bounds);
+}
+void Engine::drawCursor() {
+  Glitter::Core::GLFWInput* input = getInput();
+  if(!input->pressed(Player::Input::KEYS::W))
+    drawStupiderCursor();
+}
+void Engine::render() {
+  drawCursor();
+  for(auto& e : enemies){
+    auto [lo, hi] = e->getBoundsWorld();
+    if(screen.onScreen(lo, hi))
+      e->render(&screen);
+  }
+  for(auto& p : players){
+    auto [lo, hi] = p->getBoundsWorld();
+    if(screen.onScreen(lo, hi))
+      p->render(&screen);
+  }
 }
