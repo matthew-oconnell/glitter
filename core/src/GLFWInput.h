@@ -25,7 +25,7 @@ namespace Core {
   static void cursor_position_callback(GLFWwindow* window, double x, double y);
   static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 
-   unsigned int GLFWInput::mapToGLFWKeycode(Player::Input::KEYS k) const;
+   unsigned int mapToGLFWKeycode(Player::Input::KEYS k) const;
 };
 }
 }
