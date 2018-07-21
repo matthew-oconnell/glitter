@@ -131,7 +131,7 @@ void Engine::drawCursor() {
     drawStupiderCursor();
 }
 void Engine::render() {
-  drawCursor();
+//  drawCursor();
   for(auto& e : enemies){
     auto [lo, hi] = e->getBoundsWorld();
     if(screen.onScreen(lo, hi))
@@ -139,7 +139,8 @@ void Engine::render() {
   }
   for(auto& p : players){
     auto [lo, hi] = p->getBoundsWorld();
-    if(screen.onScreen(lo, hi))
+    if(screen.onScreen(lo, hi)) {
       p->render(&screen);
+    }
   }
 }

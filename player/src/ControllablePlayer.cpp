@@ -19,3 +19,7 @@ void ControllablePlayer::update() {
 
     world_location += a;
 }
+void ControllablePlayer::render(Screen *s) {
+    Player::render(s);
+    last_screen_range = s->rangeInWorldCoordinates();
+}

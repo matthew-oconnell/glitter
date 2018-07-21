@@ -10,7 +10,7 @@ class Player {
   virtual void update() = 0;
 
   void setModel(std::shared_ptr<Graphics::Model> m);
-  void render(Screen* s);
+  virtual void render(Screen* s);
   void setWorldLocation(Math::Vec2d location);
   Math::Vec2d getWorldLocation() const;
   std::tuple<Math::Vec2d, Math::Vec2d> getBoundsWorld() const;

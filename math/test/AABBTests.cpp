@@ -12,4 +12,14 @@ TEST_CASE("AABB can determine intersection"){
   REQUIRE(AABB::intersect(a, b));
 }
 
+TEST_CASE("Clamp to AABB"){
+  AABB::Box2d a = {{0.0f, 0.0f}, {1.0f, 1.0f}};
+  auto c = AABB::clamp(a, Math::Vec2d{-1.0f, -1.0f});
+  REQUIRE(c.x == 0.0f);
+  REQUIRE(c.y == 0.0f);
+  c = AABB::clamp(a, Math::Vec2d{0.25f, -1.0f});
+  REQUIRE(c.x == 0.25f);
+  REQUIRE(c.y == 0.25f);
+}
+
 
