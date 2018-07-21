@@ -98,7 +98,7 @@ void Engine::spawnRandomEnemy() {
   static std::random_device rd;
   static std::mt19937 gen(rd());
   auto enemy = std::make_shared<Player::Enemy>();
-  enemy->setModel(std::make_shared<Graphics::Square>(1.0f, 1.0f));
+  enemy->setModel(std::make_shared<Graphics::Square>(0.6f, 0.6f));
   auto [lo, hi] = screen.rangeInWorldCoordinates();
   std::uniform_real_distribution x_distribution(lo.x, hi.x);
   std::uniform_real_distribution y_distribution(lo.y, hi.y);
