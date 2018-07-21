@@ -1,7 +1,6 @@
 #pragma once
 #include <array>
 #include <GL/glew.h>
-#include <Screen.h>
 #include "Model.h"
 namespace Glitter {
   namespace Graphics {

@@ -11,6 +11,7 @@
 #include <cmath>
 #include <Map.h>
 #include <Enemy.h>
+#include <AABB.h>
 
 using namespace Glitter;
 using namespace Core;
@@ -49,13 +50,18 @@ void Engine::loop() {
     Glitter::Core::GLFWInput* input = getInput();
     if(!input->pressed(Player::Input::KEYS::W))
       drawStupiderCursor();
+    collidePlayersWithEnemies();
+    for(auto& e : enemies){
+      auto [lo, hi] = e->getBoundsWorld();
+      e->update();
+      if(screen.onScreen(lo, hi))
+        e->render(&screen);
+    }
     for(auto& p : players){
-      auto model = p->getModel();
-      auto [lo, hi] = model->getBounds();
-      if(screen.onScreen(lo, hi)) {
-        p->update();
+      auto [lo, hi] = p->getBoundsWorld();
+      p->update();
+      if(screen.onScreen(lo, hi))
         p->render(&screen);
-      }
     }
     update();
   }
@@ -104,5 +110,25 @@ void Engine::spawnRandomEnemy() {
   std::uniform_real_distribution y_distribution(lo.y, hi.y);
   auto spawn_location = Math::Vec2d{float(x_distribution(gen)), float(y_distribution(gen))};
   enemy->setWorldLocation(spawn_location);
-  addPlayer(enemy);
+  addEnemy(enemy);
+}
+void Engine::addEnemy(std::shared_ptr<Player::Enemy> e) {
+  enemies.emplace_back(e);
+}
+void Engine::collidePlayersWithEnemies() {
+  for(auto& p : players){
+    for(auto e_iter = enemies.begin(); e_iter != enemies.end();){
+      if(collide(p.get(), e_iter->get())){
+        std::cout << "Player eats enemy!" << std::endl;
+        e_iter = enemies.erase(e_iter);
+      } else {
+        ++e_iter;
+      }
+    }
+  }
+}
+bool Engine::collide(Player::Player *p, Player::Player *e) {
+  auto p_bounds = p->getBoundsWorld();
+  auto e_bounds = e->getBoundsWorld();
+  return Math::AABB::intersect(e_bounds, p_bounds);
 }

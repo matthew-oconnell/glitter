@@ -1,12 +1,11 @@
 #include <tuple>
 #include <Vector2d.h>
+#include <AABB.h>
 #include "Screen.h"
 
 using namespace Glitter;
 bool Screen::onScreen(Math::Vec2d lo, Math::Vec2d hi) {
-  if(lo.x > world_location_hi.x || lo.y > world_location_hi.y || hi.x < world_location_lo.x || hi.y < world_location_lo.y)
-    return false;
-  return true;
+  return (Math::AABB::intersect({lo, hi}, {world_location_lo, world_location_hi}));
 }
 Math::Vec2d Screen::convertToScreenCoords(const Math::Vec2d &world_coords) {
   float x_percent = (world_coords.x - world_location_lo.x) / (world_location_hi.x - world_location_lo.x);
