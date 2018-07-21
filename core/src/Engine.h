@@ -14,7 +14,7 @@ struct GLFWwindow;
 namespace Glitter {
 namespace Core {
 
-class Input;
+class GLFWInput;
 
 class Engine {
  public:
@@ -23,14 +23,14 @@ class Engine {
   void addPlayer(std::shared_ptr<Player::Player> p);
   void update();
   bool closed();
-  Input* getInput();
+  GLFWInput* getInput();
   Window* getWindow();
   void clear();
  private:
   std::string name;
   Screen screen;
   std::shared_ptr<Window> window;
-  std::shared_ptr<Input> input;
+  std::shared_ptr<GLFWInput> input;
   GlewContext glew_context;
   std::chrono::system_clock::time_point game_start;
   std::vector<std::shared_ptr<Player::Player>> players;

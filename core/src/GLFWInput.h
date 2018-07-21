@@ -1,13 +1,14 @@
 #pragma once
 #include <array>
 #include <GLFW/glfw3.h>
+#include <Input.h>
 
 namespace Glitter{
 namespace Core {
-class Input {
+ class GLFWInput : public Player::Input {
  public:
-  Input(GLFWwindow* window);
-  bool isKeyPressed(unsigned int key_code) const;
+  GLFWInput(GLFWwindow* window);
+  bool pressed(Player::Input::KEYS k) const override;
   bool isMouseButtonPressed(unsigned int button_code) const;
   float getCursorX() const;
   float getCursorY() const;
@@ -23,6 +24,8 @@ class Input {
   static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
   static void cursor_position_callback(GLFWwindow* window, double x, double y);
   static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
+
+   unsigned int GLFWInput::mapToGLFWKeycode(Player::Input::KEYS k) const;
 };
 }
 }

@@ -7,31 +7,30 @@ namespace Glitter {
   namespace Player {
     class Player {
     public:
-        virtual Math::Vec2d acceleration() const = 0;
-        virtual float mass() const = 0;
+        virtual void update() = 0;
 
         void setModel(std::shared_ptr<Graphics::Model> m);
         Graphics::Model* getModel();
         void render();
         void setWorldLocation(Math::Vec2d location);
         Math::Vec2d getWorldLocation() const;
-    private:
-        Math::Vec2d location;
+    protected:
+        Math::Vec2d world_location;
         std::shared_ptr<Graphics::Model> model = nullptr;
     };
 
     inline void Player::setWorldLocation(Math::Vec2d loc) {
-        location = loc;
+        world_location = loc;
     }
     inline Math::Vec2d Player::getWorldLocation() const {
-        return location;
+        return world_location;
     }
     inline void Player::setModel(std::shared_ptr<Graphics::Model> m) {
         model = std::move(m);
     }
     inline void Player::render(){
         if(model != nullptr)
-            model->render(location);
+            model->render(world_location);
     }
     inline Graphics::Model *Player::getModel() {
       if(model != nullptr)

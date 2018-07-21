@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-set(SOURCES src/Engine.h src/Engine.cpp src/Input.cpp src/Input.h src/GlewContext.cpp src/GlewContext.h src/Window.cpp src/Window.h)
+set(SOURCES src/Engine.h src/Engine.cpp src/GLFWInput.cpp src/GLFWInput.h src/GlewContext.cpp src/GlewContext.h src/Window.cpp src/Window.h)
 
 add_library(Core STATIC ${SOURCES})
 add_library(Glitter::Core ALIAS Core)

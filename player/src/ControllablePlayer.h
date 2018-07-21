@@ -9,8 +9,7 @@ namespace Glitter {
     class ControllablePlayer :public Player {
     public:
         explicit ControllablePlayer(Input* input);
-        Glitter::Math::Vec2d acceleration() const;
-        float mass() const;
+        void update();
     private:
         Input* input;
     };

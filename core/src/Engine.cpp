@@ -4,7 +4,7 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include "Engine.h"
-#include "Input.h"
+#include "GLFWInput.h"
 #include <Shader.h>
 #include <Square.h>
 #include <cmath>
@@ -17,7 +17,7 @@ Engine::Engine(std::string title, int width, int height)
     : name(std::move(title)),
       screen(),
       window(std::make_shared<Window>(&screen, title, width, height)),
-      input(std::make_shared<Input>(window->getGLFWHandle())),
+      input(std::make_shared<GLFWInput>(window->getGLFWHandle())),
       glew_context(){
   glfwSetWindowUserPointer(window->getGLFWHandle(), (void*)this);
   game_start = std::chrono::system_clock::now();
@@ -32,32 +32,25 @@ bool Engine::closed() {
 void Engine::clear() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
-Input* Engine::getInput() {
+GLFWInput* Engine::getInput() {
   return input.get();
 }
 void Engine::loop() {
-  float pi = 4.0f*atan(1.0f);
-  float frequency = 0.2f;
 
-  World::Map map(100, 100);
   while(!closed()){
     auto now = std::chrono::system_clock::now();
     auto game_time = std::chrono::duration_cast<std::chrono::milliseconds>(now - game_start).count();
     clear();
-    Glitter::Core::Input* input = getInput();
-    if(! (input->isKeyPressed(GLFW_KEY_W) || input->isMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT))) {
+    Glitter::Core::GLFWInput* input = getInput();
+    if(!input->pressed(Player::Input::KEYS::W))
       drawStupiderCursor();
-    }
     for(auto& p : players){
-      float game_time_in_seconds = float(game_time)/1000.0f;
-      auto loc = Math::Vec2d{1.0f, 1.0f}*0.5f*std::cos(2.0f*pi*frequency*game_time_in_seconds);
-      p->setWorldLocation(loc);
       auto model = p->getModel();
       auto [lo, hi] = model->getBounds();
       if(screen.onScreen(lo, hi))
         p->render();
+      p->update();
     }
-    map.render();
     update();
   }
 }
