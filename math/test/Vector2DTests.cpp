@@ -32,7 +32,7 @@ TEST_CASE("Vector2d addition"){
     REQUIRE(v.x == 100.0f);
     REQUIRE(v.y ==  24.0f);
 }
-TEST_CASE("Vector2d addition"){
+TEST_CASE("Vector2d summation"){
     Vec2d a{50.0f, 12.0f};
     Vec2d b{50.0f, 12.0f};
     a+=b;
