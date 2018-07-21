@@ -21,8 +21,8 @@ Engine::Engine(std::string title, int width, int height)
       glew_context(){
   glfwSetWindowUserPointer(window->getGLFWHandle(), (void*)this);
   game_start = std::chrono::system_clock::now();
-  float screen_scale = 0.1f;
-  screen.setScreenScale(screen_scale);
+  float pixels_per_meter = 20.0f;
+  screen.setScreenScale(pixels_per_meter);
   screen.windowResize(window->getWidth(), window->getHeight());
 }
 void Engine::update() {

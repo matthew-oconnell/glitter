@@ -15,9 +15,9 @@ Math::Vec2d Screen::convertToScreenCoords(const Math::Vec2d &world_coords) {
   return Math::Vec2d{screen_x, screen_y};
 }
 void Screen::setScreenScale(float s) {
-  scale = s;
+  pixels_per_meter = s;
 }
 void Screen::windowResize(int width, int height) {
   world_location_lo = {0.0, 0.0};
-  world_location_hi = {width*scale, height*scale};
+  world_location_hi = {width/pixels_per_meter, height/pixels_per_meter};
 }

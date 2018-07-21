@@ -9,7 +9,7 @@ class Screen {
   Math::Vec2d convertToScreenCoords(const Math::Vec2d& world_coords);
   bool onScreen(Math::Vec2d lo, Math::Vec2d hi);
  private:
-  float scale = 1.0;
+  float pixels_per_meter = 1.0;
   Math::Vec2d world_location_lo;
   Math::Vec2d world_location_hi;
 };
