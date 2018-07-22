@@ -4,5 +4,3 @@ set(SOURCES AllTests.cpp MockInput.cpp MockInput.h IdiotTests.cpp)
 
 add_executable(PlayerTests ${SOURCES})
 target_link_libraries(PlayerTests PRIVATE Glitter::Player Catch2::Catch2)
-
-

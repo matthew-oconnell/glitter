@@ -2,19 +2,19 @@
 using namespace Glitter;
 using namespace Player;
 
-ControllablePlayer::ControllablePlayer(Glitter::Player::Input* input)
+ControllablePlayer::ControllablePlayer(Input* input, Screen* s)
         :input(input){
 }
 void ControllablePlayer::update() {
     float speed = 0.5f;
     Math::Vec2d a{0,0};
-    if(input->pressed(Glitter::Player::Input::KEYS::W))
+    if(input->pressed(Input::KEYS::W))
         a += Math::Vec2d{0.0, speed};
-    if(input->pressed(Glitter::Player::Input::KEYS::A))
+    if(input->pressed(Input::KEYS::A))
         a += Math::Vec2d{-speed, 0.0f};
-    if(input->pressed(Glitter::Player::Input::KEYS::D))
+    if(input->pressed(Input::KEYS::D))
         a += Math::Vec2d{speed, 0.0f};
-    if(input->pressed(Glitter::Player::Input::KEYS::S))
+    if(input->pressed(Input::KEYS::S))
         a += Math::Vec2d{0.0f, -speed};
 
     world_location += a;

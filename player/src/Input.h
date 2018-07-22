@@ -1,4 +1,5 @@
 #pragma once
+#include <Vector2d.h>
 
 namespace Glitter {
   namespace Player {
@@ -8,6 +9,7 @@ namespace Glitter {
             W, A, S, D, SPACE
         };
         virtual bool pressed(KEYS k) const = 0;
+        virtual Math::Vec2d getCursorLocation() const = 0;
     };
   }
 }

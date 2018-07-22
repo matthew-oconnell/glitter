@@ -9,9 +9,8 @@ namespace Core {
  public:
   GLFWInput(GLFWwindow* window);
   bool pressed(Player::Input::KEYS k) const override;
+  Math::Vec2d getCursorLocation() const override;
   bool isMouseButtonPressed(unsigned int button_code) const;
-  float getCursorX() const;
-  float getCursorY() const;
 
  private:
   const static int MAX_KEYBOARD_KEYS = 1024;

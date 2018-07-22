@@ -57,9 +57,6 @@ bool GLFWInput::isMouseButtonPressed(unsigned int button_code) const {
     return false;
   return mouse_buttons[button_code];
 }
-float GLFWInput::getCursorX() const {
-  return mouse_x;
-}
-float GLFWInput::getCursorY() const {
-  return mouse_y;
+Math::Vec2d GLFWInput::getCursorLocation() const {
+  return {mouse_x, mouse_y};
 }

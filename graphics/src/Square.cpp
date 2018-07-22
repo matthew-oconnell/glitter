@@ -16,7 +16,7 @@ void Graphics::Square::render(Math::Vec2d world_location, Screen* s) {
       Math::Vec2d{-half_width+world_location.x,   half_width+world_location.y}
   };
   for(auto c: corners_world){
-    c = s->convertToScreenCoords(c);
+    c = s->convertWorldToRender(c);
     glVertex2d(c.x, c.y);
   }
   glEnd();

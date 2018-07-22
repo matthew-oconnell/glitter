@@ -27,6 +27,7 @@ class Engine {
   bool closed();
   GLFWInput* getInput();
   Window* getWindow();
+  Screen* getScreen();
   void clear();
  private:
   std::string name;

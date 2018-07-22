@@ -25,7 +25,7 @@ Engine::Engine(std::string title, int width, int height)
   glfwSetWindowUserPointer(window->getGLFWHandle(), (void*)this);
   game_start = std::chrono::system_clock::now();
   float pixels_per_meter = 90.0f;
-  screen.setScreenScale(pixels_per_meter);
+  screen.setPixelsPerMeter(pixels_per_meter);
   screen.windowResize(window->getWidth(), window->getHeight());
 }
 void Engine::update() {
@@ -65,17 +65,12 @@ void Engine::drawStupiderCursor(){
   // Because the cursor is chasing you.
   // You have been warned.
   glBegin(GL_TRIANGLES);
-  float x = input->getCursorX();
-  float y = input->getCursorY();
-  float width = float(window->getWidth());
-  float height = float(window->getHeight());
-  float x_percent = x / width;
-  float y_percent = y / height;
-  float screen_x = (2.0f*x_percent) - 1.0f;
-  float screen_y = -(2.0f*y_percent) + 1.0f;
-  glVertex2f( 0.0f+screen_x,  0.0f+screen_y);
-  glVertex2f(-0.02f+screen_x, -0.1f+screen_y);
-  glVertex2f( 0.02f+screen_x, -0.1f+screen_y);
+  auto screen_coords = input->getCursorLocation();
+  auto world_coords = screen.convertScreenToWorld(screen_coords);
+  auto render_coords = screen.convertWorldToRender(world_coords);
+  glVertex2f( 0.00f+render_coords.x,  0.0f+render_coords.y);
+  glVertex2f(-0.02f+render_coords.x, -0.1f+render_coords.y);
+  glVertex2f( 0.02f+render_coords.x, -0.1f+render_coords.y);
   glEnd();
 }
 void Engine::addPlayer(std::shared_ptr<Player::Player> p) {
@@ -131,7 +126,7 @@ void Engine::drawCursor() {
     drawStupiderCursor();
 }
 void Engine::render() {
-//  drawCursor();
+  drawCursor();
   for(auto& e : enemies){
     auto [lo, hi] = e->getBoundsWorld();
     if(screen.onScreen(lo, hi))
@@ -143,4 +138,7 @@ void Engine::render() {
       p->render(&screen);
     }
   }
+}
+Screen* Engine::getScreen() {
+  return &screen;
 }

@@ -1,6 +1,6 @@
-prefix=C:/Users/matth/CMakeBuilds/7891600e-10b3-b33f-948f-c3f23d156ad8/install/x86-Release
+prefix=C:/Program Files (x86)/glitter
 exec_prefix=${prefix}
-libdir=C:/Users/matth/CMakeBuilds/7891600e-10b3-b33f-948f-c3f23d156ad8/install/x86-Release/lib
+libdir=C:/Program Files (x86)/glitter/lib
 includedir=${prefix}/include
 
 Name: glew
