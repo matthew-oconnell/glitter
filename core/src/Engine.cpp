@@ -117,8 +117,8 @@ void Engine::collidePlayersWithEnemies() {
   for(auto& p : allies){
     for(auto e_iter = enemies.begin(); e_iter != enemies.end();){
       if(collide(p.get(), e_iter->get())){
-        e_iter = enemies.erase(e_iter);
-        flashScreenRed();
+        playerDies(p.get());
+        return;
       } else {
         ++e_iter;
       }
@@ -194,4 +194,12 @@ void Engine::flashScreenRed() {
 }
 void Engine::setScreenColorBlue() {
   glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
+}
+void Engine::playerDies(Player::Ally* p) {
+  p->setWorldLocation({4.0f, 4.0f});
+  flashScreenRed();
+  resetEnemies();
+}
+void Engine::resetEnemies() {
+  enemies.clear();
 }

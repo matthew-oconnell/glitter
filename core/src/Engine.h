@@ -51,6 +51,8 @@ class Engine {
   void collideBulletsWithEnemies();
   void flashScreenRed();
   void setScreenColorBlue();
+  void playerDies(Player::Ally* p);
+  void resetEnemies();
 };
 }
 }
