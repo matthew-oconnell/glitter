@@ -42,7 +42,6 @@ class Engine {
   std::vector<std::shared_ptr<Player::Enemy>> enemies;
   std::vector<std::shared_ptr<Player::Bullet>> bullets;
   void spawnEnemies(std::chrono::milliseconds game_time);
-  void spawnBullets();
   void spawnRandomEnemy();
   void collidePlayersWithEnemies();
   bool collide(Player::Player *p, Player::Player *e);
@@ -50,6 +49,8 @@ class Engine {
   void render();
   void drawAim();
   void collideBulletsWithEnemies();
+  void flashScreenRed();
+  void setScreenColorBlue();
 };
 }
 }

@@ -64,15 +64,19 @@ GLFWInput* Engine::getInput() {
 }
 void Engine::loop() {
 
+  unsigned int game_frame_count = 0;
   while(!closed()){
     auto now = std::chrono::system_clock::now();
     auto game_time = std::chrono::duration_cast<std::chrono::milliseconds>(now - game_start);
+    if(game_frame_count % 10 == 0)
+      setScreenColorBlue();
     update();
     spawnEnemies(game_time);
     collideBulletsWithEnemies();
     collidePlayersWithEnemies();
-    clear();
     render();
+    game_frame_count++;
+    std::cout << "total frames: " << game_frame_count << " FPS: " << game_frame_count/(game_time.count()/1000.0) << std::endl;
   }
 }
 Window* Engine::getWindow() {
@@ -114,6 +118,7 @@ void Engine::collidePlayersWithEnemies() {
     for(auto e_iter = enemies.begin(); e_iter != enemies.end();){
       if(collide(p.get(), e_iter->get())){
         e_iter = enemies.erase(e_iter);
+        flashScreenRed();
       } else {
         ++e_iter;
       }
@@ -136,6 +141,7 @@ void Engine::drawCursor() {
   glEnd();
 }
 void Engine::render() {
+  clear();
 //  drawCursor();
   drawAim();
   for(auto& e : enemies){
@@ -182,4 +188,10 @@ void Engine::collideBulletsWithEnemies() {
     }
     ++b_iter;
   }
+}
+void Engine::flashScreenRed() {
+  glClearColor(0.7f, 0.2f, 0.2f, 0.5f);
+}
+void Engine::setScreenColorBlue() {
+  glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
 }

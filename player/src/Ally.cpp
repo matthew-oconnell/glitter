@@ -30,7 +30,6 @@ void Ally::render(Screen *s) {
 }
 void Ally::shoot() {
   if(! input->pressed(Input::SPACE)) return;
-  std::cout << "Bang!" << std::endl;
 
   auto cursor_location = screen->convertScreenToWorld(input->getCursorLocation());
   auto direction = cursor_location - world_location;
