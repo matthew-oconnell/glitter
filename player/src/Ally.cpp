@@ -7,8 +7,10 @@ Ally::Ally(Input* input, Screen* screen_in, std::function<void(std::shared_ptr<B
         :input(input), screen(screen_in), shoot_bullets_here(s){
 }
 void Ally::update() {
+  screen->rangeInWorldCoordinates();
   float speed = 0.2f;
   move(speed);
+  world_location = Math::AABB::clamp(screen->rangeInWorldCoordinates(), world_location);
   shoot();
 }
 void Ally::move(float speed) {

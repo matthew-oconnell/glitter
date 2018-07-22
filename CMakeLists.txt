@@ -7,6 +7,9 @@ add_subdirectory(third-party/catch)
 add_subdirectory(third-party/glfw-3.2.1)
 add_subdirectory(third-party/glew-2.1.0/build/cmake)
 
+add_executable(UnitTests AllTests.cpp)
+target_link_libraries(UnitTests PRIVATE Catch2::Catch2)
+
 add_subdirectory(player)
 add_subdirectory(math)
 add_subdirectory(screen)
@@ -22,3 +25,5 @@ target_link_libraries(Game PRIVATE
         Glitter::Utilities
         Glitter::Graphics
         ${OPENGL_LIBRARIES})
+
+
