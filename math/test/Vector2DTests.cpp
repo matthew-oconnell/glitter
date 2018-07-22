@@ -55,8 +55,10 @@ TEST_CASE("Vector2d multiply by scalar"){
     REQUIRE(v.y ==  6.0f);
 
 }
-
-
+TEST_CASE("Can normalize"){
+    Vec2d a{50.0f, 12.0f};
+    Vec2d norm = a.normal();
+}
 TEST_CASE("Can output vec"){
     Vec2d a{1.0f, 0.1f};
     std::cout << a << std::endl;

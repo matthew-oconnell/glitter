@@ -15,6 +15,7 @@ Window::Window(Screen* screen, std::string title, int width, int height)
 
   glfwMakeContextCurrent(window_handle);
   glfwSetWindowSizeCallback(window_handle, window_resize_callback);
+  glfwSetInputMode(window_handle, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 }
 
 void Window::window_resize_callback(GLFWwindow *window, int width, int height) {

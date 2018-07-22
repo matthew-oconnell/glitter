@@ -25,7 +25,6 @@ void Line::render(Math::Vec2d world_location, Screen *s) {
   direction *= 1.1f;
   auto render_begin = s->convertWorldToRender(world_begin);
   auto render_end = s->convertWorldToRender(world_begin + direction);
-  std::cout << render_begin << " " << render_end << std::endl;
   glColor4f(1.0f,0.0f,0.0f,1.0f);
   glVertex2d(render_begin.x, render_begin.y);
   glVertex2d(render_end.x, render_end.y);

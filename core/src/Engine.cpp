@@ -28,13 +28,30 @@ Engine::Engine(std::string title, int width, int height)
   float pixels_per_meter = 90.0f;
   screen.setPixelsPerMeter(pixels_per_meter);
   screen.windowResize(window->getWidth(), window->getHeight());
+
+  auto shoot = [this](std::shared_ptr<Player::Bullet> b){
+    bullets.emplace_back(b);
+  };
+  auto player_one = std::make_shared<Glitter::Player::Ally>(getInput(), getScreen(), shoot);
+  player_one->setModel(std::make_shared<Glitter::Graphics::Square>(1.0f, 1.0f, std::array<GLfloat, 4>{0.8f, 0.3f, 0.3f, 1.0f}));
+  player_one->setWorldLocation({5.0f, 5.0f});
+  addAlly(player_one);
 }
 void Engine::update() {
-  window->update();
   for(auto& e : enemies)
     e->update();
-  for(auto& p : players)
+  for(auto& p : allies)
     p->update();
+  for(auto b_iter = bullets.begin(); b_iter != bullets.end();){
+    auto& b = *b_iter;
+    b->update();
+    auto [lo, hi] = b->getBoundsWorld();
+    if(!screen.onScreen(lo, hi))
+      b_iter = bullets.erase(b_iter);
+    else
+      ++b_iter;
+  }
+  window->update();
 }
 bool Engine::closed() {
   return window->closed();
@@ -52,6 +69,7 @@ void Engine::loop() {
     auto game_time = std::chrono::duration_cast<std::chrono::milliseconds>(now - game_start);
     update();
     spawnEnemies(game_time);
+    collideBulletsWithEnemies();
     collidePlayersWithEnemies();
     clear();
     render();
@@ -60,9 +78,8 @@ void Engine::loop() {
 Window* Engine::getWindow() {
   return window.get();
 }
-
-void Engine::addPlayer(std::shared_ptr<Player::Player> p) {
-    players.emplace_back(std::move(p));
+void Engine::addAlly(std::shared_ptr<Player::Ally> p) {
+    allies.emplace_back(std::move(p));
 }
 void Engine::spawnEnemies(std::chrono::milliseconds game_time) {
   double spawn_rate_in_seconds = 2.0;
@@ -93,7 +110,7 @@ void Engine::addEnemy(std::shared_ptr<Player::Enemy> e) {
   enemies.emplace_back(e);
 }
 void Engine::collidePlayersWithEnemies() {
-  for(auto& p : players){
+  for(auto& p : allies){
     for(auto e_iter = enemies.begin(); e_iter != enemies.end();){
       if(collide(p.get(), e_iter->get())){
         e_iter = enemies.erase(e_iter);
@@ -119,17 +136,23 @@ void Engine::drawCursor() {
   glEnd();
 }
 void Engine::render() {
-  drawCursor();
+//  drawCursor();
   drawAim();
   for(auto& e : enemies){
     auto [lo, hi] = e->getBoundsWorld();
     if(screen.onScreen(lo, hi))
       e->render(&screen);
   }
-  for(auto& p : players){
+  for(auto& p : allies){
     auto [lo, hi] = p->getBoundsWorld();
     if(screen.onScreen(lo, hi)) {
       p->render(&screen);
+    }
+  }
+  for(auto& b : bullets){
+    auto [lo, hi] = b->getBoundsWorld();
+    if(screen.onScreen(lo, hi)) {
+      b->render(&screen);
     }
   }
 }
@@ -137,8 +160,26 @@ Screen* Engine::getScreen() {
   return &screen;
 }
 void Engine::drawAim() {
-  auto player_location = players.front()->getWorldLocation();
+  auto player_location = allies.front()->getWorldLocation();
   auto cursor_location = screen.convertScreenToWorld(input->getCursorLocation());
   auto line = Graphics::Line(player_location, cursor_location);
   line.render({0.0f, 0.0f}, &screen);
+}
+void Engine::collideBulletsWithEnemies() {
+  for(auto b_iter = bullets.begin(); b_iter != bullets.end();){
+    auto &b = *b_iter;
+    auto bullet_bounds = b->getBoundsWorld();
+    for(auto e_iter = enemies.begin(); e_iter != enemies.end();){
+      auto& e = *e_iter;
+      auto enemy_bounds = e->getBoundsWorld();
+      if(Math::AABB::intersect(enemy_bounds, bullet_bounds)){
+        e_iter = enemies.erase(e_iter);
+        b_iter = bullets.erase(b_iter);
+        break;
+      } else {
+        ++e_iter;
+      }
+    }
+    ++b_iter;
+  }
 }

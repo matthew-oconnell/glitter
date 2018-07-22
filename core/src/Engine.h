@@ -9,6 +9,8 @@
 #include "Window.h"
 #include <Screen.h>
 #include <Enemy.h>
+#include <Bullet.h>
+#include <Ally.h>
 
 struct GLFWwindow;
 
@@ -21,7 +23,7 @@ class Engine {
  public:
   Engine(std::string title, int width, int height);
   void loop();
-  void addPlayer(std::shared_ptr<Player::Player> p);
+  void addAlly(std::shared_ptr<Player::Ally> p);
   void addEnemy(std::shared_ptr<Player::Enemy> e);
   void update();
   bool closed();
@@ -36,15 +38,18 @@ class Engine {
   std::shared_ptr<GLFWInput> input;
   GlewContext glew_context;
   std::chrono::system_clock::time_point game_start;
-  std::vector<std::shared_ptr<Player::Player>> players;
+  std::vector<std::shared_ptr<Player::Ally>> allies;
   std::vector<std::shared_ptr<Player::Enemy>> enemies;
+  std::vector<std::shared_ptr<Player::Bullet>> bullets;
   void spawnEnemies(std::chrono::milliseconds game_time);
+  void spawnBullets();
   void spawnRandomEnemy();
   void collidePlayersWithEnemies();
   bool collide(Player::Player *p, Player::Player *e);
   void drawCursor();
   void render();
   void drawAim();
+  void collideBulletsWithEnemies();
 };
 }
 }
