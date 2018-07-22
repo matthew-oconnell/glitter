@@ -38,13 +38,13 @@ class Engine {
   std::chrono::system_clock::time_point game_start;
   std::vector<std::shared_ptr<Player::Player>> players;
   std::vector<std::shared_ptr<Player::Enemy>> enemies;
-  void drawStupiderCursor();
   void spawnEnemies(std::chrono::milliseconds game_time);
   void spawnRandomEnemy();
   void collidePlayersWithEnemies();
   bool collide(Player::Player *p, Player::Player *e);
   void drawCursor();
   void render();
+  void drawAim();
 };
 }
 }

@@ -12,6 +12,7 @@
 #include <Map.h>
 #include <Enemy.h>
 #include <AABB.h>
+#include <Line.h>
 
 using namespace Glitter;
 using namespace Core;
@@ -60,19 +61,6 @@ Window* Engine::getWindow() {
   return window.get();
 }
 
-void Engine::drawStupiderCursor(){
-  // This method draws a little triangle at the cursor.
-  // Because the cursor is chasing you.
-  // You have been warned.
-  glBegin(GL_TRIANGLES);
-  auto screen_coords = input->getCursorLocation();
-  auto world_coords = screen.convertScreenToWorld(screen_coords);
-  auto render_coords = screen.convertWorldToRender(world_coords);
-  glVertex2f( 0.00f+render_coords.x,  0.0f+render_coords.y);
-  glVertex2f(-0.02f+render_coords.x, -0.1f+render_coords.y);
-  glVertex2f( 0.02f+render_coords.x, -0.1f+render_coords.y);
-  glEnd();
-}
 void Engine::addPlayer(std::shared_ptr<Player::Player> p) {
     players.emplace_back(std::move(p));
 }
@@ -121,12 +109,18 @@ bool Engine::collide(Player::Player *p, Player::Player *e) {
   return Math::AABB::intersect(e_bounds, p_bounds);
 }
 void Engine::drawCursor() {
-  Glitter::Core::GLFWInput* input = getInput();
-  if(!input->pressed(Player::Input::KEYS::W))
-    drawStupiderCursor();
+  glBegin(GL_TRIANGLES);
+  auto screen_coords = input->getCursorLocation();
+  auto world_coords = screen.convertScreenToWorld(screen_coords);
+  auto render_coords = screen.convertWorldToRender(world_coords);
+  glVertex2f( 0.00f+render_coords.x,  0.0f+render_coords.y);
+  glVertex2f(-0.02f+render_coords.x, -0.1f+render_coords.y);
+  glVertex2f( 0.02f+render_coords.x, -0.1f+render_coords.y);
+  glEnd();
 }
 void Engine::render() {
   drawCursor();
+  drawAim();
   for(auto& e : enemies){
     auto [lo, hi] = e->getBoundsWorld();
     if(screen.onScreen(lo, hi))
@@ -141,4 +135,10 @@ void Engine::render() {
 }
 Screen* Engine::getScreen() {
   return &screen;
+}
+void Engine::drawAim() {
+  auto player_location = players.front()->getWorldLocation();
+  auto cursor_location = screen.convertScreenToWorld(input->getCursorLocation());
+  auto line = Graphics::Line(player_location, cursor_location);
+  line.render({0.0f, 0.0f}, &screen);
 }

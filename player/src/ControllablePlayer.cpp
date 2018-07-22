@@ -6,7 +6,7 @@ ControllablePlayer::ControllablePlayer(Input* input, Screen* s)
         :input(input){
 }
 void ControllablePlayer::update() {
-    float speed = 0.5f;
+    float speed = 0.2f;
     Math::Vec2d a{0,0};
     if(input->pressed(Input::KEYS::W))
         a += Math::Vec2d{0.0, speed};

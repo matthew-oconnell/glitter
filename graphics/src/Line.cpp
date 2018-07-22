@@ -19,8 +19,11 @@ std::tuple<Math::Vec2d, Math::Vec2d> Line::getBounds() const {
 void Line::render(Math::Vec2d world_location, Screen *s) {
   auto world_begin = begin + world_location;
   auto world_end = end + world_location;
-  glBegin(GL_LINE);
-  glVertex2d(world_begin.x, world_begin.y);
-  glVertex2d(world_end.x, world_end.y);
+  glBegin(GL_LINE_STRIP);
+  auto render_begin = s->convertWorldToRender(world_begin);
+  auto render_end = s->convertWorldToRender(world_end);
+  glColor4f(1.0f,0.0f,0.0f,1.0f);
+  glVertex2d(render_begin.x, render_begin.y);
+  glVertex2d(render_end.x, render_end.y);
   glEnd();
 }
