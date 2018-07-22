@@ -6,13 +6,12 @@ namespace Glitter {
 namespace Core {
 class Window {
  public:
-  Window(Screen * screen, std::string title, int width, int height);
+  Window(Screen * screen, std::string title);
   ~Window();
   GLFWwindow* getGLFWHandle();
   void update();
   bool closed();
-  int getHeight();
-  int getWidth();
+  std::array<int, 2> getWidthAndHeight();
  private:
   std::string title;
   int width;

@@ -21,7 +21,7 @@ class GLFWInput;
 
 class Engine {
  public:
-  Engine(std::string title, int width, int height);
+  Engine(std::string title);
   void loop();
   void addAlly(std::shared_ptr<Player::Ally> p);
   void addEnemy(std::shared_ptr<Player::Enemy> e);

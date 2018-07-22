@@ -17,17 +17,18 @@
 using namespace Glitter;
 using namespace Core;
 
-Engine::Engine(std::string title, int width, int height)
+Engine::Engine(std::string title)
     : name(std::move(title)),
       screen(),
-      window(std::make_shared<Window>(&screen, title, width, height)),
+      window(std::make_shared<Window>(&screen, title)),
       input(std::make_shared<GLFWInput>(window->getGLFWHandle())),
       glew_context(){
   glfwSetWindowUserPointer(window->getGLFWHandle(), (void*)this);
   game_start = std::chrono::system_clock::now();
   float pixels_per_meter = 90.0f;
   screen.setPixelsPerMeter(pixels_per_meter);
-  screen.windowResize(window->getWidth(), window->getHeight());
+  auto [width, height] = window->getWidthAndHeight();
+  screen.windowResize(width, height);
 
   auto shoot = [this](std::shared_ptr<Player::Bullet> b){
     bullets.emplace_back(b);
@@ -131,18 +132,24 @@ bool Engine::collide(Player::Player *p, Player::Player *e) {
   return Math::AABB::intersect(e_bounds, p_bounds);
 }
 void Engine::drawCursor() {
-  glBegin(GL_TRIANGLES);
   auto screen_coords = input->getCursorLocation();
+  auto [width, height] = window->getWidthAndHeight();
+  screen_coords = Math::AABB::clamp({{0.0f, 0.0f},{float(width), float(height)}}, screen_coords);
+  glfwSetCursorPos(window->getGLFWHandle(), screen_coords.x, screen_coords.y);
   auto world_coords = screen.convertScreenToWorld(screen_coords);
-  auto render_coords = screen.convertWorldToRender(world_coords);
-  glVertex2f( 0.00f+render_coords.x,  0.0f+render_coords.y);
-  glVertex2f(-0.02f+render_coords.x, -0.1f+render_coords.y);
-  glVertex2f( 0.02f+render_coords.x, -0.1f+render_coords.y);
+  std::array<Math::Vec2d, 3> coords = { world_coords + Math::Vec2d{ 0.0f,  0.0f},
+                                        world_coords + Math::Vec2d{-0.08f, -0.3f},
+                                        world_coords + Math::Vec2d{ 0.08f, -0.3f} };
+  glBegin(GL_TRIANGLES);
+  for(auto c : coords) {
+    c = screen.convertWorldToRender(c);
+    glVertex2d(c.x, c.y);
+  }
   glEnd();
 }
 void Engine::render() {
   clear();
-//  drawCursor();
+  drawCursor();
   drawAim();
   for(auto& e : enemies){
     auto [lo, hi] = e->getBoundsWorld();

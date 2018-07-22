@@ -6,16 +6,20 @@ using namespace Core;
 Window::~Window() {
   glfwDestroyWindow(window_handle);
 }
-Window::Window(Screen* screen, std::string title, int width, int height)
-    : screen(screen), title(title), width(width), height(height){
+Window::Window(Screen* screen, std::string title)
+    : screen(screen), title(title){
 
-  window_handle = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
+  auto monitor = glfwGetPrimaryMonitor();
+  auto mode = glfwGetVideoMode(monitor);
+  width = mode->width;
+  height = mode->height;
+  window_handle = glfwCreateWindow(width, height, title.c_str(), monitor, nullptr);
   if(window_handle == nullptr)
     throw std::logic_error("Could not create some glfw window: " + title);
 
   glfwMakeContextCurrent(window_handle);
   glfwSetWindowSizeCallback(window_handle, window_resize_callback);
-  glfwSetInputMode(window_handle, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+  glfwSetInputMode(window_handle, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 void Window::window_resize_callback(GLFWwindow *window, int width, int height) {
@@ -35,9 +39,6 @@ void Window::update() {
 bool Window::closed() {
   return bool(glfwWindowShouldClose(window_handle));
 }
-int Window::getHeight() {
-  return height;
-}
-int Window::getWidth() {
-  return width;
+std::array<int, 2> Window::getWidthAndHeight() {
+  return {width, height};
 }

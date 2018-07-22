@@ -23,7 +23,7 @@ void Screen::windowResize(int w, int h) {
   world_location_lo = {0.0, 0.0};
   world_location_hi = {width/pixels_per_meter, height/pixels_per_meter};
 }
-std::tuple<Math::Vec2d, Math::Vec2d> Screen::rangeInWorldCoordinates() const {
+Math::AABB::Box2d Screen::rangeInWorldCoordinates() const {
   return {world_location_lo, world_location_hi};
 }
 Math::Vec2d Screen::convertScreenToWorld(const Math::Vec2d &screen_coords) {

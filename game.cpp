@@ -13,7 +13,7 @@ void finalize();
 int main() {
   initialize();
 
-  Glitter::Core::Engine engine("Glitter", 1280, 720);
+  Glitter::Core::Engine engine("Glitter");
 //  auto idiot = std::make_shared<Glitter::Player::Idiot>();
 //  idiot->setModel(std::make_shared<Glitter::Graphics::Square>(0.5f, 0.5f));
 //  idiot->setWorldLocation({0.0f, 0.0f});
