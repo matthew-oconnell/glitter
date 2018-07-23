@@ -10,7 +10,9 @@
 void initialize();
 void finalize();
 
+void thankThirdParty();
 int main() {
+  thankThirdParty();
   initialize();
 
   Glitter::Core::Engine engine("Glitter");
@@ -24,6 +26,21 @@ int main() {
 
   finalize();
   return 0;
+}
+void thankThirdParty() {
+  std::cout << "\n"
+               "Thank you to the following libraries: \n"
+
+               "The OpenGL Extension Wrangler Library\n"
+               "Copyright (C) 2002-2007, Milan Ikits <milan ikits[]ieee org>\n"
+               "Copyright (C) 2002-2007, Marcelo E. Magallon <mmagallo[]debian org>\n"
+               "Copyright (C) 2002, Lev Povalahev\n"
+               "All rights reserved.\n"
+               "\n"
+               "Catch2: https://github.com/catchorg/Catch2\n"
+               "\n"
+               "GLFW: https://github.com/glfw/glfw"
+               << std::endl;
 }
 
 void initialize() {

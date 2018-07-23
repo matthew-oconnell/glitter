@@ -1,0 +1,24 @@
+I did not write the software in this folder.
+They are licensed under their own authors.
+Please check each folder for their individual licenses.
+All these licenses are fairly liberal.  None exclude commercial use.
+
+Catch2:
+-------
+https://github.com/catchorg/Catch2
+Boost Software License 1.0
+
+GLFW:
+-----
+https://github.com/glfw/glfw/blob/master/LICENSE.md
+zlib License
+
+GLEW:
+-----
+The OpenGL Extension Wrangler Library
+Copyright (C) 2002-2007, Milan Ikits <milan ikits[]ieee org>
+Copyright (C) 2002-2007, Marcelo E. Magallon <mmagallo[]debian org>
+Copyright (C) 2002, Lev Povalahev
+All rights reserved.
+
+I am very grateful for these awesome libraries.
