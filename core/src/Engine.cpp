@@ -87,7 +87,7 @@ void Engine::addAlly(std::shared_ptr<Player::Ally> p) {
     allies.emplace_back(std::move(p));
 }
 void Engine::spawnEnemies(std::chrono::milliseconds game_time) {
-  double spawn_rate_in_seconds = 2.0;
+  double spawn_rate_in_seconds = 1.0;
   static std::chrono::milliseconds last_enemy_spawned;
   auto elapsed_time_since_last_enemy_in_seconds = (game_time.count() - last_enemy_spawned.count()) / 1000.0;
   if(elapsed_time_since_last_enemy_in_seconds > spawn_rate_in_seconds) {
@@ -98,7 +98,7 @@ void Engine::spawnEnemies(std::chrono::milliseconds game_time) {
 void Engine::spawnRandomEnemy() {
   static std::random_device rd;
   static std::mt19937 gen(rd());
-  auto enemy = std::make_shared<Player::Enemy>();
+  auto enemy = std::make_shared<Player::Enemy>(&screen);
   std::uniform_real_distribution color_distribution(0.0, 1.0);
   std::array<GLfloat, 4> color={float(color_distribution(gen)),
                                 float(color_distribution(gen)),
@@ -109,6 +109,7 @@ void Engine::spawnRandomEnemy() {
   std::uniform_real_distribution y_distribution(lo.y, hi.y);
   auto spawn_location = Math::Vec2d{float(x_distribution(gen)), float(y_distribution(gen))};
   enemy->setWorldLocation(spawn_location);
+  enemy->setTarget(allies.front().get());
   addEnemy(enemy);
 }
 void Engine::addEnemy(std::shared_ptr<Player::Enemy> e) {

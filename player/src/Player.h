@@ -17,6 +17,7 @@ class Player {
  protected:
   Math::Vec2d world_location;
   std::shared_ptr<Graphics::Model> model = nullptr;
+  friend class Player;
 };
 
 inline void Player::setWorldLocation(Math::Vec2d loc) {
