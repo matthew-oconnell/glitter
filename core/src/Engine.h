@@ -53,6 +53,9 @@ class Engine {
   void setScreenColorBlue();
   void playerDies(Player::Ally* p);
   void resetEnemies();
+  void drawEnemies();
+  void drawBullets();
+  void drawPlayers();
 };
 }
 }

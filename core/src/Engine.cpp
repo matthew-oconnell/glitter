@@ -13,6 +13,7 @@
 #include <Enemy.h>
 #include <AABB.h>
 #include <Line.h>
+#include <Texture.h>
 
 using namespace Glitter;
 using namespace Core;
@@ -34,7 +35,9 @@ Engine::Engine(std::string title)
     bullets.emplace_back(b);
   };
   auto player_one = std::make_shared<Glitter::Player::Ally>(getInput(), getScreen(), shoot);
-  player_one->setModel(std::make_shared<Glitter::Graphics::Square>(1.0f, 1.0f, std::array<GLfloat, 4>{0.8f, 0.3f, 0.3f, 1.0f}));
+  std::cout << "Trying to create player one." << std::endl;
+  player_one->setModel(std::make_shared<Glitter::Graphics::Texture>("assets/player.png", 1.0f, 1.0f));
+//  player_one->setModel(std::make_shared<Glitter::Graphics::Square>(1.0f, 1.0f, std::array<GLfloat, 4>{0.8f, 0.3f, 0.3f, 1.0f}));
   player_one->setWorldLocation({5.0f, 5.0f});
   addAlly(player_one);
 }
@@ -96,14 +99,15 @@ void Engine::spawnEnemies(std::chrono::milliseconds game_time) {
   }
 }
 void Engine::spawnRandomEnemy() {
-  static std::random_device rd;
+static std::random_device rd;
   static std::mt19937 gen(rd());
   auto enemy = std::make_shared<Player::Enemy>(&screen);
   std::uniform_real_distribution color_distribution(0.0, 1.0);
   std::array<GLfloat, 4> color={float(color_distribution(gen)),
                                 float(color_distribution(gen)),
                                 float(color_distribution(gen)), 1.0f};
-  enemy->setModel(std::make_shared<Graphics::Square>(0.6f, 0.6f, color));
+//  enemy->setModel(std::make_shared<Graphics::Square>(0.6f, 0.6f, color));
+  enemy->setModel(std::make_shared<Graphics::Texture>("assets/enemy.png", 0.6f, 0.6f));
   auto [lo, hi] = screen.rangeInWorldCoordinates();
   std::uniform_real_distribution x_distribution(lo.x, hi.x);
   std::uniform_real_distribution y_distribution(lo.y, hi.y);
@@ -141,6 +145,7 @@ void Engine::drawCursor() {
   std::array<Math::Vec2d, 3> coords = { world_coords + Math::Vec2d{ 0.0f,  0.0f},
                                         world_coords + Math::Vec2d{-0.08f, -0.3f},
                                         world_coords + Math::Vec2d{ 0.08f, -0.3f} };
+  glColor4f(1.0f,1.0f,1.0f,1.0f);
   glBegin(GL_TRIANGLES);
   for(auto c : coords) {
     c = screen.convertWorldToRender(c);
@@ -151,23 +156,32 @@ void Engine::drawCursor() {
 void Engine::render() {
   clear();
   drawCursor();
-  drawAim();
-  for(auto& e : enemies){
-    auto [lo, hi] = e->getBoundsWorld();
-    if(screen.onScreen(lo, hi))
-      e->render(&screen);
-  }
+//  drawAim();
+  drawEnemies();
+  drawBullets();
+  drawPlayers();
+}
+void Engine::drawPlayers() {
   for(auto& p : allies){
     auto [lo, hi] = p->getBoundsWorld();
     if(screen.onScreen(lo, hi)) {
       p->render(&screen);
     }
   }
+}
+void Engine::drawBullets() {
   for(auto& b : bullets){
     auto [lo, hi] = b->getBoundsWorld();
     if(screen.onScreen(lo, hi)) {
       b->render(&screen);
     }
+  }
+}
+void Engine::drawEnemies() {
+  for(auto& e : enemies){
+    auto [lo, hi] = e->getBoundsWorld();
+    if(screen.onScreen(lo, hi))
+      e->render(&screen);
   }
 }
 Screen* Engine::getScreen() {

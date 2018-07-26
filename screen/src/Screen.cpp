@@ -4,7 +4,7 @@
 #include "Screen.h"
 
 using namespace Glitter;
-bool Screen::onScreen(Math::Vec2d lo, Math::Vec2d hi) {
+bool Screen::onScreen(Math::Vec2d lo, Math::Vec2d hi) const {
   return (Math::AABB::intersect({lo, hi}, {world_location_lo, world_location_hi}));
 }
 Math::Vec2d Screen::convertWorldToRender(const Math::Vec2d &world_coords) {

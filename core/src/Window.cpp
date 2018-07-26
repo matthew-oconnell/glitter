@@ -13,6 +13,9 @@ Window::Window(Screen* screen, std::string title)
   auto mode = glfwGetVideoMode(monitor);
   width = mode->width;
   height = mode->height;
+  monitor = nullptr; // disable fullscreen
+  width /= 2;
+  height /= 2;
   window_handle = glfwCreateWindow(width, height, title.c_str(), monitor, nullptr);
   if(window_handle == nullptr)
     throw std::logic_error("Could not create some glfw window: " + title);

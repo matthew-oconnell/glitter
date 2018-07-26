@@ -1,3 +1,5 @@
+#include <File.h>
+#include <vector>
 #include "Square.h"
 
 using namespace Glitter;
@@ -8,6 +10,7 @@ Graphics::Square::Square(float width, float height, std::array<GLfloat, 4> color
 void Graphics::Square::render(Math::Vec2d world_location, Screen* s) {
 
   glBegin(GL_QUADS);
+  glDisable(GL_TEXTURE_2D);
   glColor4f(color[0], color[1], color[2], color[3]);
   std::array<Math::Vec2d, 4> corners_world = {
       Math::Vec2d{-half_width+world_location.x,  -half_width+world_location.y},
@@ -19,8 +22,10 @@ void Graphics::Square::render(Math::Vec2d world_location, Screen* s) {
     c = s->convertWorldToRender(c);
     glVertex2d(c.x, c.y);
   }
+  glEnable(GL_TEXTURE_2D);
   glEnd();
 }
 std::tuple<Math::Vec2d, Math::Vec2d> Glitter::Graphics::Square::getBounds() const {
   return {Math::Vec2d{-half_width, -half_height}, Math::Vec2d{half_width, half_height}};
 }
+
