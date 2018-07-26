@@ -10,7 +10,7 @@ class Enemy : public Player {
   void setTarget(Player* p);
  private:
   Screen* screen;
-  float speed = 0.07f;
+  float speed = 0.04f;
   Player* target;
   void clampToScreen();
 };

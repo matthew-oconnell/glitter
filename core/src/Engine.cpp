@@ -99,14 +99,9 @@ void Engine::spawnEnemies(std::chrono::milliseconds game_time) {
   }
 }
 void Engine::spawnRandomEnemy() {
-static std::random_device rd;
+  static std::random_device rd;
   static std::mt19937 gen(rd());
   auto enemy = std::make_shared<Player::Enemy>(&screen);
-  std::uniform_real_distribution color_distribution(0.0, 1.0);
-  std::array<GLfloat, 4> color={float(color_distribution(gen)),
-                                float(color_distribution(gen)),
-                                float(color_distribution(gen)), 1.0f};
-//  enemy->setModel(std::make_shared<Graphics::Square>(0.6f, 0.6f, color));
   enemy->setModel(std::make_shared<Graphics::Texture>("assets/enemy.png", 0.6f, 0.6f));
   auto [lo, hi] = screen.rangeInWorldCoordinates();
   std::uniform_real_distribution x_distribution(lo.x, hi.x);
