@@ -36,7 +36,7 @@ Engine::Engine(std::string title)
   };
   auto player_one = std::make_shared<Glitter::Player::Ally>(getInput(), getScreen(), shoot);
   std::cout << "Trying to create player one." << std::endl;
-  player_one->setModel(std::make_shared<Glitter::Graphics::Texture>("assets/player.png", 1.0f, 1.0f));
+  player_one->setModel(std::make_shared<Glitter::Graphics::Texture>("assets/enemy.png", 1.0f, 1.0f));
 //  player_one->setModel(std::make_shared<Glitter::Graphics::Square>(1.0f, 1.0f, std::array<GLfloat, 4>{0.8f, 0.3f, 0.3f, 1.0f}));
   player_one->setWorldLocation({5.0f, 5.0f});
   addAlly(player_one);
