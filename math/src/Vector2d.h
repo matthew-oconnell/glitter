@@ -16,6 +16,6 @@ struct Vec2d {
   float magnitude() const;
   Vec2d normal() const;
 };
-std::ostream& operator<<(std::ostream& stream, const Vec2d& obj);
 }
 }
+std::ostream& operator<<(std::ostream& s, const Glitter::Math::Vec2d& obj);

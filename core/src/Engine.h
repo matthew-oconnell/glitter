@@ -3,14 +3,17 @@
 #include <string>
 #include <array>
 #include <chrono>
-#include <Player.h>
 #include <vector>
+
 #include "GlewContext.h"
 #include "Window.h"
+
+#include <Player.h>
 #include <Screen.h>
 #include <Enemy.h>
 #include <Bullet.h>
 #include <Ally.h>
+#include <Text.h>
 
 struct GLFWwindow;
 
@@ -37,6 +40,7 @@ class Engine {
   std::shared_ptr<Window> window;
   std::shared_ptr<GLFWInput> input;
   GlewContext glew_context;
+  Text text;
   std::chrono::system_clock::time_point game_start;
   std::vector<std::shared_ptr<Player::Ally>> allies;
   std::vector<std::shared_ptr<Player::Enemy>> enemies;

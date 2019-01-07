@@ -12,7 +12,7 @@ namespace Player {
 class Ally :public Player {
  public:
   Ally(Input* input, Screen* screen, std::function<void(std::shared_ptr<Bullet>)> shoot_bullets_here);
-  void update();
+  void update() override;
   void render(Screen* s) override;
  private:
   Input* input;

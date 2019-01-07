@@ -334,6 +334,7 @@ add_library(freetype
   ${PRIVATE_HEADERS}
   ${BASE_SRCS}
 )
+add_library(freetype::freetype ALIAS freetype)
 
 set_target_properties(
   freetype PROPERTIES
@@ -363,7 +364,10 @@ target_include_directories(
 
 target_include_directories(
   freetype
-    PUBLIC $<INSTALL_INTERFACE:include/freetype2>)
+    PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include/freetype2>
+)
 
 if (BUILD_FRAMEWORK)
   set_property(SOURCE ${PUBLIC_CONFIG_HEADERS}

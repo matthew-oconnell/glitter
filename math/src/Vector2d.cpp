@@ -1,5 +1,6 @@
 
 #include "Vector2d.h"
+#include <cmath>
 using namespace Glitter;
 using namespace Math;
 
@@ -32,7 +33,7 @@ Vec2d Vec2d::normal() const {
   out /= magnitude();
   return out;
 }
-std::ostream &operator<<(std::ostream &stream, const Vec2d &obj) {
-  stream<<obj.x<<" "; stream<<obj.y;
-  return stream;
+std::ostream& operator<<(std::ostream &s, const Vec2d &obj) {
+  s << obj.x << " " << obj.y;
+  return s;
 }

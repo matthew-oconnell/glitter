@@ -7,6 +7,9 @@ using namespace Utilities;
 
 Glitter::Graphics::Shader::Shader(const char *vertex_path, const char *fragment_path)
     : vertex_path(vertex_path), fragment_path(fragment_path) {
+
+  printf("trying to open shader: %s %s", vertex_path, fragment_path);
+  fflush(stdout);
   shaderID = load();
   enable();
 }
@@ -53,4 +56,7 @@ void Graphics::Shader::disable() {
 }
 Graphics::Shader::~Shader() {
   disable();
+}
+GLuint Graphics::Shader::getId() {
+    return shaderID;
 }

@@ -9,6 +9,7 @@ class Shader {
   Shader(const char* vertex_path, const char* fragment_path);
   void enable();
   void disable();
+  GLuint getId();
   ~Shader();
 
  private:

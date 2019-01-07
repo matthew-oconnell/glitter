@@ -14,6 +14,9 @@
 #include <AABB.h>
 #include <Line.h>
 #include <Texture.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 using namespace Glitter;
 using namespace Core;
@@ -21,7 +24,7 @@ using namespace Core;
 Engine::Engine(std::string title)
     : name(std::move(title)),
       screen(),
-      window(std::make_shared<Window>(&screen, title)),
+      window(std::make_shared<Window>(&screen, name)),
       input(std::make_shared<GLFWInput>(window->getGLFWHandle())),
       glew_context(){
   glfwSetWindowUserPointer(window->getGLFWHandle(), (void*)this);
@@ -68,6 +71,12 @@ GLFWInput* Engine::getInput() {
 }
 void Engine::loop() {
 
+  Graphics::Shader text_shader("assets/shaders/text.vert", "assets/shaders/text.frag");
+  auto [width, height] = window->getWidthAndHeight();
+  glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(width), 0.0f,
+                                    static_cast<GLfloat>(height));
+  glUniformMatrix4fv(glGetUniformLocation(text_shader.getId(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+
   unsigned int game_frame_count = 0;
   while(!closed()){
     auto now = std::chrono::system_clock::now();
@@ -79,6 +88,8 @@ void Engine::loop() {
     collideBulletsWithEnemies();
     collidePlayersWithEnemies();
     render();
+    text.renderText(text_shader, "This sentence took me all day.", 25, 25, 1.0, {0.5,0.8,0.2,1.0});
+
     game_frame_count++;
     std::cout << "total frames: " << game_frame_count << " FPS: " << game_frame_count/(game_time.count()/1000.0) << std::endl;
   }
@@ -150,8 +161,8 @@ void Engine::drawCursor() {
 }
 void Engine::render() {
   clear();
-  drawCursor();
-//  drawAim();
+//  drawCursor();
+  drawAim();
   drawEnemies();
   drawBullets();
   drawPlayers();

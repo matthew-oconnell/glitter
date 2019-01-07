@@ -1,16 +1,14 @@
 #include <iostream>
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
 #include <Engine.h>
-#include <GLFWInput.h>
 #include <Idiot.h>
 #include <Square.h>
 #include <Ally.h>
+#include "Text.h"
 
 void initialize();
 void finalize();
-
 void thankThirdParty();
+
 int main() {
   thankThirdParty();
   initialize();

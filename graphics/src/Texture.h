@@ -4,6 +4,7 @@
 #include <GL/glew.h>
 #include "Model.h"
 #include "Square.h"
+#include "Shader.h"
 namespace Glitter::Graphics {
 class Texture : public Model {
  public:
@@ -14,6 +15,8 @@ class Texture : public Model {
  private:
   float half_width, half_height;
   GLuint texture_handle;
+  GLuint VAO, VBO;
+  Shader shader;
   unsigned width, height;
   double u3, v3;
   size_t u2, v2;

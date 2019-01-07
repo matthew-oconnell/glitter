@@ -9,16 +9,20 @@ Window::~Window() {
 Window::Window(Screen* screen, std::string title)
     : screen(screen), title(title){
 
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+  glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
   auto monitor = glfwGetPrimaryMonitor();
   auto mode = glfwGetVideoMode(monitor);
   width = mode->width;
   height = mode->height;
   monitor = nullptr; // disable fullscreen
-  width /= 2;
-  height /= 2;
+  width /= 1.5;
+  height /= 1.5;
   window_handle = glfwCreateWindow(width, height, title.c_str(), monitor, nullptr);
   if(window_handle == nullptr)
-    throw std::logic_error("Could not create some glfw window: " + title);
+    throw std::logic_error("Could not create glfw window: " + title);
 
   glfwMakeContextCurrent(window_handle);
   glfwSetWindowSizeCallback(window_handle, window_resize_callback);

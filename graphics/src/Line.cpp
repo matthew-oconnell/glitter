@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <gl/GLEW.h>
 #include "Line.h"
+#include <cmath>
 using namespace Glitter;
 using namespace Graphics;
 
