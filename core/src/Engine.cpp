@@ -25,8 +25,8 @@ Engine::Engine(std::string title)
     : name(std::move(title)),
       screen(),
       window(std::make_shared<Window>(&screen, name)),
-      input(std::make_shared<GLFWInput>(window->getGLFWHandle())),
-      glew_context(){
+      glew_context(),
+      input(std::make_shared<GLFWInput>(window->getGLFWHandle())){
   glfwSetWindowUserPointer(window->getGLFWHandle(), (void*)this);
   game_start = std::chrono::system_clock::now();
   float pixels_per_meter = 90.0f;
@@ -83,12 +83,15 @@ void Engine::loop() {
     auto game_time = std::chrono::duration_cast<std::chrono::milliseconds>(now - game_start);
     if(game_frame_count % 10 == 0)
       setScreenColorBlue();
-    update();
-    spawnEnemies(game_time);
-    collideBulletsWithEnemies();
-    collidePlayersWithEnemies();
-    render();
-    text.renderText(text_shader, "This sentence took me all day.", 25, 25, 1.0, {0.5,0.8,0.2,1.0});
+//    update();
+//    spawnEnemies(game_time);
+//    collideBulletsWithEnemies();
+//    collidePlayersWithEnemies();
+      window->update();
+      clear();
+      drawPlayers();
+//    render();
+    text.renderText(text_shader, "Show me aliens!.", 300, 25, 1.0, {0.5,0.8,0.2,1.0});
 
     game_frame_count++;
     std::cout << "total frames: " << game_frame_count << " FPS: " << game_frame_count/(game_time.count()/1000.0) << std::endl;

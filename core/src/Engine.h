@@ -38,8 +38,8 @@ class Engine {
   std::string name;
   Screen screen;
   std::shared_ptr<Window> window;
-  std::shared_ptr<GLFWInput> input;
   GlewContext glew_context;
+  std::shared_ptr<GLFWInput> input;
   Text text;
   std::chrono::system_clock::time_point game_start;
   std::vector<std::shared_ptr<Player::Ally>> allies;

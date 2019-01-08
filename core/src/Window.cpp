@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "Window.h"
 #include "Engine.h"
 using namespace Glitter;

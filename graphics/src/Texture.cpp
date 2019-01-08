@@ -9,26 +9,41 @@ using namespace Glitter::Graphics;
 
 Texture::Texture(std::string filename, float width, float height) :
         half_width(0.5f*width), half_height(0.5f*height),
-        texture_handle(loadTexture(filename)), shader("assets/shaders/quad.vert", "assets/shaders/quad.frag") {
+        texture_handle(loadTexture(filename)),
+        shader("assets/shaders/quad.vert", "assets/shaders/quad.frag") {
 
     float vertices[] = {
-            -0.5f, -0.5f, 0.0f, // left
-             0.5f, -0.5f, 0.0f, // right
-             0.0f,  0.5f, 0.0f, // top
+            // positions          // colors           // texture coords
+            0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
+            0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
+            -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
+            -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left
     };
-
+    unsigned int indices[] = {
+            0, 1, 3, // first triangle
+            1, 2, 3  // second triangle
+    };
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);
+
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
+    // position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    // color attribute
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+    // texture coord attribute
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+    glEnableVertexAttribArray(2);
 }
 
 GLuint Texture::loadTexture(std::string filename){
@@ -54,13 +69,14 @@ GLuint Texture::loadTexture(std::string filename){
 
     glGenTextures(1, &texture_handle);
     glBindTexture(GL_TEXTURE_2D, texture_handle);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_BLEND);
-//  glDisable(GL_ALPHA_TEST);
-//
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); //GL_NEAREST = no smoothing
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
     glTexImage2D(GL_TEXTURE_2D, 0, 4, u2, v2, 0, GL_RGBA, GL_UNSIGNED_BYTE, &image2[0]);
+    glGenerateMipmap(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, 0);
 
     return texture_handle;
@@ -80,24 +96,18 @@ void Texture::render(Glitter::Math::Vec2d world_location, Glitter::Screen *s) {
         c.y = c2d.y;
     }
 
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture_handle);
     shader.enable();
     glBindVertexArray(VAO);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
-
-
-//    glColor4ub(255, 255, 255, 255);
-//    glBindTexture(GL_TEXTURE_2D, texture_handle);
-//    glEnable(GL_TEXTURE_2D);
-//  glBegin(GL_QUADS);
-//  glTexCoord2d(0.0, 0.0); glVertex2f(corners_world[0].x , corners_world[0].y);
-//  glTexCoord2d( u3, 0.0); glVertex2f(corners_world[1].x , corners_world[1].y);
-//  glTexCoord2d( u3,  v3); glVertex2f(corners_world[2].x , corners_world[2].y);
-//  glTexCoord2d(0.0,  v3); glVertex2f(corners_world[3].x , corners_world[3].y);
-//  glEnd();
-//    glBindTexture(GL_TEXTURE_2D, 0);
-//    glDisable(GL_TEXTURE_2D);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }
 std::tuple<Math::Vec2d, Math::Vec2d> Texture::getBounds() const {
     return {Math::Vec2d{-half_width, -half_height}, Math::Vec2d{half_width, half_height}};
+}
+Texture::~Texture() {
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
+    glDeleteBuffers(1, &EBO);
 }
 

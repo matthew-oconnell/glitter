@@ -12,7 +12,6 @@ void thankThirdParty();
 int main() {
   thankThirdParty();
   initialize();
-
   Glitter::Core::Engine engine("Glitter");
 //  auto idiot = std::make_shared<Glitter::Player::Idiot>();
 //  idiot->setModel(std::make_shared<Glitter::Graphics::Square>(0.5f, 0.5f));
