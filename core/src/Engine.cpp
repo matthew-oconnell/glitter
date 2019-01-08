@@ -91,7 +91,7 @@ void Engine::loop() {
       clear();
       drawPlayers();
 //    render();
-    text.renderText(text_shader, "Show me aliens!.", 300, 25, 1.0, {0.5,0.8,0.2,1.0});
+    text.renderText(text_shader,"This sentence took me all day.", 100, 25, 1.0, {0.5,0.8,0.2,1.0});
 
     game_frame_count++;
     std::cout << "total frames: " << game_frame_count << " FPS: " << game_frame_count/(game_time.count()/1000.0) << std::endl;

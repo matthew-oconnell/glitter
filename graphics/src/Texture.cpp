@@ -1,3 +1,5 @@
+#include <utility>
+
 #include <string>
 #include <lodepng.h>
 #include <File.h>
@@ -6,12 +8,34 @@
 #include "Texture.h"
 using namespace Glitter;
 using namespace Glitter::Graphics;
+GLenum glCheckError_(const char *file, int line) {
+    GLenum errorCode;
+    while ((errorCode = glGetError()) != GL_NO_ERROR)
+    {
+        std::string error;
+        switch (errorCode)
+        {
+            case GL_INVALID_ENUM:                  error = "INVALID_ENUM"; break;
+            case GL_INVALID_VALUE:                 error = "INVALID_VALUE"; break;
+            case GL_INVALID_OPERATION:             error = "INVALID_OPERATION"; break;
+            case GL_STACK_OVERFLOW:                error = "STACK_OVERFLOW"; break;
+            case GL_STACK_UNDERFLOW:               error = "STACK_UNDERFLOW"; break;
+            case GL_OUT_OF_MEMORY:                 error = "OUT_OF_MEMORY"; break;
+            case GL_INVALID_FRAMEBUFFER_OPERATION: error = "INVALID_FRAMEBUFFER_OPERATION"; break;
+        }
+        std::cout << error << " | " << file << " (" << line << ")" << std::endl;
+    }
+    return errorCode;
+}
+#define glCheckError() glCheckError_(__FILE__, __LINE__)
 
 Texture::Texture(std::string filename, float width, float height) :
         half_width(0.5f*width), half_height(0.5f*height),
-        texture_handle(loadTexture(filename)),
         shader("assets/shaders/quad.vert", "assets/shaders/quad.frag") {
-
+    texture_handle = loadTexture(std::move(filename));
+    initializeVertexData();
+}
+void Texture::initializeVertexData() {
     float vertices[] = {
             // positions          // colors           // texture coords
             0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
@@ -51,11 +75,10 @@ GLuint Texture::loadTexture(std::string filename){
     unsigned error = lodepng::decode(image, width, height, filename);
     if(error != 0) {throw std::logic_error(lodepng_error_text(error));}
 
+    size_t u2, v2;
     u2 = 1; while(u2 < width) u2 *= 2;
     v2 = 1; while(v2 < height) v2 *= 2;
     // Ratio for power of two version compared to actual version, to render the non power of two image with proper size.
-    u3 = (double)width / u2;
-    v3 = (double)height / v2;
 
     // Make power of two version of the image.
     std::vector<unsigned char> image2(u2 * v2 * 4);
@@ -69,13 +92,15 @@ GLuint Texture::loadTexture(std::string filename){
 
     glGenTextures(1, &texture_handle);
     glBindTexture(GL_TEXTURE_2D, texture_handle);
+    glCheckError();
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, 4, u2, v2, 0, GL_RGBA, GL_UNSIGNED_BYTE, &image2[0]);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, u2, v2, 0, GL_RGBA, GL_UNSIGNED_BYTE, &image2[0]);
+    glCheckError();
     glGenerateMipmap(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, 0);
 
