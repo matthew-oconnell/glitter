@@ -41,6 +41,7 @@ class Engine {
   GlewContext glew_context;
   std::shared_ptr<GLFWInput> input;
   Text text;
+  Utilities::ResourceManager resource_manager;
   std::chrono::system_clock::time_point game_start;
   std::vector<std::shared_ptr<Player::Ally>> allies;
   std::vector<std::shared_ptr<Player::Enemy>> enemies;

@@ -4,8 +4,8 @@
 using namespace Glitter;
 using namespace Player;
 
-Ally::Ally(Input* input, Screen* screen_in, std::function<void(std::shared_ptr<Bullet>)> s)
-        :input(input), screen(screen_in), shoot_bullets_here(s){
+Ally::Ally(Utilities::ResourceManager& rm, Input* input, Screen* screen_in, std::function<void(std::shared_ptr<Bullet>)> s)
+        :resource_manager(rm), input(input), screen(screen_in), shoot_bullets_here(s){
 }
 void Ally::update() {
   screen->rangeInWorldCoordinates();
@@ -39,6 +39,6 @@ void Ally::shoot() {
   direction = direction.normal();
   float bullet_speed = 0.4f;
   auto bullet = std::make_shared<Bullet>(world_location, direction, bullet_speed);
-  bullet->setModel(std::make_shared<Graphics::Texture>("assets/bullet.png", 0.1f, 0.1f));
+  bullet->setModel(std::make_shared<Graphics::Texture>(resource_manager, "assets/bullet.png", 0.1f, 0.1f));
   shoot_bullets_here(bullet);
 }

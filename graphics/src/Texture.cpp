@@ -8,14 +8,14 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glDebug.h>
 #include "Texture.h"
-#include "../../core/src/ResourceManager.h"
 using namespace Glitter;
 using namespace Glitter::Graphics;
 
-Texture::Texture(std::string filename, float width, float height) :
+Texture::Texture(Utilities::ResourceManager& rm, std::string filename, float width, float height) :
+        resource_manager(rm),
         half_width(0.5f*width), half_height(0.5f*height),
         shader("assets/shaders/quad.vert", "assets/shaders/quad.frag") {
-    texture_handle = loadTexture(std::move(filename));
+    texture_handle = getTexture(std::move(filename));
     initializeVertexData();
 }
 void Texture::initializeVertexData() {
@@ -50,10 +50,9 @@ void Texture::initializeVertexData() {
     glEnableVertexAttribArray(1);
 }
 
-GLuint Texture::loadTexture(std::string filename){
-  Core::ResourceManager resourceManager;
-  resourceManager.loadTexture(filename, width, height);
-  return resourceManager.getTextureHandle(filename);
+GLuint Texture::getTexture(std::string filename){
+  resource_manager.loadTexture(filename, width, height);
+  return resource_manager.getTextureHandle(filename);
 }
 void Texture::render(Glitter::Math::Vec2d world_location, Glitter::Screen *s) {
 

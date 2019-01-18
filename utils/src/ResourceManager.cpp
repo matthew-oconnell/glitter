@@ -2,7 +2,9 @@
 #include <vector>
 #include <glDebug.h>
 #include <lodepng.h>
-void Glitter::Core::ResourceManager::loadTexture(std::string filename, unsigned int width, unsigned int height) {
+void Glitter::Utilities::ResourceManager::loadTexture(std::string filename, unsigned int width, unsigned int height) {
+  if(textures.count(filename))
+    return;
   std::vector<unsigned char> image;
   GLuint texture_handle;
   unsigned error = lodepng::decode(image, width, height, filename);
@@ -42,6 +44,6 @@ void Glitter::Core::ResourceManager::loadTexture(std::string filename, unsigned 
 
   textures[filename] = texture_handle;
 }
-GLuint Glitter::Core::ResourceManager::getTextureHandle(std::string filename) {
+GLuint Glitter::Utilities::ResourceManager::getTextureHandle(std::string filename) {
   return textures.at(filename);
 }

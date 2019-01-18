@@ -7,7 +7,6 @@ set(SOURCES
         src/GLFWInput.h
         src/GlewContext.cpp src/GlewContext.h
         src/Window.cpp src/Window.h
-        src/ResourceManager.cpp src/ResourceManager.h
         )
 
 add_library(Core STATIC ${SOURCES})
@@ -18,7 +17,6 @@ target_link_libraries(Core PUBLIC glfw glew_s
         Glitter::Player
         Glitter::Screen
         Glitter::Text
-        LodePNG::LodePNG
         Glitter::World)
 target_include_directories(Core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../third-party/glew-2.1.0/include)
 target_include_directories(Core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)

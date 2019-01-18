@@ -4,7 +4,7 @@
 #include <GL/glew.h>
 
 namespace Glitter {
-namespace Core {
+namespace Utilities {
 class ResourceManager {
  public:
   ResourceManager() = default;

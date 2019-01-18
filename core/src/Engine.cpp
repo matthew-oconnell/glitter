@@ -38,9 +38,9 @@ Engine::Engine(std::string title)
   auto shoot = [this](std::shared_ptr<Player::Bullet> b){
     bullets.emplace_back(b);
   };
-  auto player_one = std::make_shared<Glitter::Player::Ally>(getInput(), getScreen(), shoot);
+  auto player_one = std::make_shared<Glitter::Player::Ally>(resource_manager,getInput(), getScreen(), shoot);
   std::cout << "Trying to create player one." << std::endl;
-  player_one->setModel(std::make_shared<Glitter::Graphics::Texture>("assets/ufo.png", 1.0f, 1.0f));
+  player_one->setModel(std::make_shared<Glitter::Graphics::Texture>(resource_manager,"assets/ufo.png", 1.0f, 1.0f));
   player_one->setWorldLocation({5.0f, 5.0f});
   addAlly(player_one);
 }
@@ -114,7 +114,7 @@ void Engine::spawnRandomEnemy() {
   static std::random_device rd;
   static std::mt19937 gen(rd());
   auto enemy = std::make_shared<Player::Enemy>(&screen);
-  enemy->setModel(std::make_shared<Graphics::Texture>("assets/enemy.png", 0.4f, 0.4f));
+  enemy->setModel(std::make_shared<Graphics::Texture>(resource_manager,"assets/enemy.png", 0.4f, 0.4f));
   auto [lo, hi] = screen.rangeInWorldCoordinates();
   std::uniform_real_distribution x_distribution(lo.x, hi.x);
   std::uniform_real_distribution y_distribution(lo.y, hi.y);
