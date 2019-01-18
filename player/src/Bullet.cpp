@@ -12,7 +12,7 @@ void Bullet::update() {
   world_location += direction*speed;
 }
 Math::AABB::Box2d Bullet::getBoundsWorld() const {
-  auto [lo, hi] = model->getBounds();
+  auto [lo, hi] = model->getWorldBounds();
   return {lo + world_location, hi + world_location};
 }
 void Bullet::setModel(std::shared_ptr<Graphics::Model> m) {

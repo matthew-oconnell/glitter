@@ -34,7 +34,7 @@ inline void Player::render(Screen* screen){
     model->render(world_location, screen);
 }
 inline std::tuple<Math::Vec2d, Math::Vec2d> Player::getBoundsWorld() const {
-  auto [lo, hi] = model->getBounds();
+  auto [lo, hi] = model->getWorldBounds();
   lo += world_location;
   hi += world_location;
   return {lo, hi};

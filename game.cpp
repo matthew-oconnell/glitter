@@ -1,7 +1,6 @@
 #include <iostream>
 #include <Engine.h>
 #include <Idiot.h>
-#include <Square.h>
 #include <Ally.h>
 #include "Text.h"
 
@@ -13,14 +12,7 @@ int main() {
   thankThirdParty();
   initialize();
   Glitter::Core::Engine engine("Glitter");
-//  auto idiot = std::make_shared<Glitter::Player::Idiot>();
-//  idiot->setModel(std::make_shared<Glitter::Graphics::Square>(0.5f, 0.5f));
-//  idiot->setWorldLocation({0.0f, 0.0f});
-//  engine.addAlly(idiot);
-
-
   engine.loop();
-
   finalize();
   return 0;
 }

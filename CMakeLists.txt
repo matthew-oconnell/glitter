@@ -20,7 +20,6 @@ add_subdirectory(player)
 add_subdirectory(math)
 add_subdirectory(screen)
 add_subdirectory(graphics)
-add_subdirectory(world)
 add_subdirectory(core)
 add_subdirectory(text)
 

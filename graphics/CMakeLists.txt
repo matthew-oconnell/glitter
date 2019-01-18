@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 
-set(SOURCES src/Line.cpp src/Line.h
+set(SOURCES
         src/Texture.cpp src/Texture.h
-        src/Shader.cpp src/Shader.h src/Model.h src/Square.cpp src/Square.h)
+        src/Shader.cpp src/Shader.h src/Model.h)
 
 add_library(Graphics STATIC ${SOURCES})
 add_library(Glitter::Graphics ALIAS Graphics)

@@ -1,4 +1,3 @@
-#include <Square.h>
 #include <Texture.h>
 #include "Ally.h"
 using namespace Glitter;

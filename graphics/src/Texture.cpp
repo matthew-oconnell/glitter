@@ -11,9 +11,9 @@
 using namespace Glitter;
 using namespace Glitter::Graphics;
 
-Texture::Texture(Utilities::ResourceManager& rm, std::string filename, float width, float height) :
+Texture::Texture(Utilities::ResourceManager& rm, std::string filename, float model_height, float model_width) :
         resource_manager(rm),
-        half_width(0.5f*width), half_height(0.5f*height),
+        half_width(0.5f*model_height), half_height(0.5f*model_width),
         shader("assets/shaders/quad.vert", "assets/shaders/quad.frag") {
     texture_handle = getTexture(std::move(filename));
     initializeVertexData();
@@ -75,7 +75,7 @@ void Texture::render(Glitter::Math::Vec2d world_location, Glitter::Screen *s) {
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     glCheckError();
 }
-std::tuple<Math::Vec2d, Math::Vec2d> Texture::getBounds() const {
+std::tuple<Math::Vec2d, Math::Vec2d> Texture::getWorldBounds() const {
     return {Math::Vec2d{-half_width, -half_height}, Math::Vec2d{half_width, half_height}};
 }
 Texture::~Texture() {
