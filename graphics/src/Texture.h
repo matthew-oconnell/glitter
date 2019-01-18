@@ -21,7 +21,6 @@ namespace Glitter::Graphics {
       GLuint texture_handle;
       GLuint VAO, VBO, EBO;
       Shader shader;
-      glm::vec3 origin[4];
       unsigned width, height;
 
       GLuint loadTexture(std::string filename);

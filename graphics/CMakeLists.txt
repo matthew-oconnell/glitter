@@ -11,7 +11,6 @@ target_link_libraries(Graphics
         Glitter::Utilities
         Glitter::Math
         Glitter::Screen
-        LodePNG::LodePNG
         glm::glm
         )
 target_include_directories(Graphics PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../third-party/glew-2.1.0/include)
