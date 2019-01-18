@@ -14,6 +14,7 @@
 #include <AABB.h>
 #include <Line.h>
 #include <Texture.h>
+#include <FPSCounter.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -40,7 +41,6 @@ Engine::Engine(std::string title)
   auto player_one = std::make_shared<Glitter::Player::Ally>(getInput(), getScreen(), shoot);
   std::cout << "Trying to create player one." << std::endl;
   player_one->setModel(std::make_shared<Glitter::Graphics::Texture>("assets/ufo.png", 1.0f, 1.0f));
-//  player_one->setModel(std::make_shared<Glitter::Graphics::Square>(1.0f, 1.0f, std::array<GLfloat, 4>{0.8f, 0.3f, 0.3f, 1.0f}));
   player_one->setWorldLocation({5.0f, 5.0f});
   addAlly(player_one);
 }
@@ -77,14 +77,11 @@ void Engine::loop() {
                                     static_cast<GLfloat>(height));
   glUniformMatrix4fv(glGetUniformLocation(text_shader.getId(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
+  Utilities::FPSCounter fps_counter;
   unsigned int game_frame_count = 0;
-  unsigned int fps_frame_count = 0;
-  auto now = std::chrono::system_clock::now();
-  auto last_fps_time_reset = now;
   while(!closed()){
-    now = std::chrono::system_clock::now();
+    auto now = std::chrono::system_clock::now();
     auto game_time = std::chrono::duration_cast<std::chrono::milliseconds>(now - game_start);
-    auto fps_counter_time = std::chrono::duration_cast<std::chrono::milliseconds>(now - last_fps_time_reset);
     if(game_frame_count % 10 == 0)
       setScreenColorBlue();
     update();
@@ -93,17 +90,9 @@ void Engine::loop() {
     collidePlayersWithEnemies();
     render();
     game_frame_count++;
-    fps_frame_count++;
-    double fps = fps_frame_count / (fps_counter_time.count()/1000.0);
-    std::string fps_string = std::to_string(fps);
+    fps_counter.frame();
+    std::string fps_string = std::to_string(fps_counter.fps());
     text.renderText(text_shader,"FPS: " + fps_string, 100.0f, 25.0f, 1.0f, {0.5f,0.8f,0.2f,1.0f});
-
-    if(fps_counter_time.count() > 1000.0){
-      fps_frame_count = 0;
-      last_fps_time_reset = std::chrono::system_clock::now();
-    }
-
-//    std::cout << "total frames: " << game_frame_count << " FPS: " << game_frame_count/(game_time.count()/1000.0) << std::endl;
   }
 }
 Window* Engine::getWindow() {
