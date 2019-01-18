@@ -104,8 +104,11 @@ void Texture::render(Glitter::Math::Vec2d world_location, Glitter::Screen *s) {
     };
     world_location = s->convertWorldToRender(world_location);
 
+    glCheckError();
     glActiveTexture(GL_TEXTURE0);
+    glCheckError();
     glBindTexture(GL_TEXTURE_2D, texture_handle);
+    glCheckError();
     glm::mat4 trans = glm::mat4(1.0f);
     trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
     trans = glm::translate(trans, glm::vec3(world_location.x, world_location.y, 0.0f));
@@ -113,15 +116,22 @@ void Texture::render(Glitter::Math::Vec2d world_location, Glitter::Screen *s) {
     shader.enable();
     unsigned int transformLoc = glGetUniformLocation(shader.getId(), "transform");
     glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
+    glCheckError();
     glBindVertexArray(VAO);
+    glCheckError();
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+    glCheckError();
 }
 std::tuple<Math::Vec2d, Math::Vec2d> Texture::getBounds() const {
     return {Math::Vec2d{-half_width, -half_height}, Math::Vec2d{half_width, half_height}};
 }
 Texture::~Texture() {
+    glCheckError();
     glDeleteVertexArrays(1, &VAO);
+    glCheckError();
     glDeleteBuffers(1, &VBO);
+    glCheckError();
     glDeleteBuffers(1, &EBO);
+    glCheckError();
 }
 

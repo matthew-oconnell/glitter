@@ -1,5 +1,6 @@
 #include "Text.h"
 #include <iostream>
+#include <glDebug.h>
 
 Glitter::Text::Text() {
     if (FT_Init_FreeType(&ft))
@@ -73,10 +74,15 @@ void Glitter::Text::renderText(Graphics::Shader &s, const std::string& text,
                 std::array<GLfloat, 4> color){
 
     // Activate corresponding render state
+    glCheckError();
     s.enable();
+    glCheckError();
     glUniform3f(glGetUniformLocation(s.getId(), "textColor"), color[0], color[1], color[2]);
+    glCheckError();
     glActiveTexture(GL_TEXTURE0);
+    glCheckError();
     glBindVertexArray(VAO);
+    glCheckError();
 
     // Iterate through all characters
     std::string::const_iterator c;
@@ -101,16 +107,23 @@ void Glitter::Text::renderText(Graphics::Shader &s, const std::string& text,
         };
         // Render glyph texture over quad
         glBindTexture(GL_TEXTURE_2D, ch.texture_id);
+        glCheckError();
         // Update content of VBO memory
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glCheckError();
         glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+        glCheckError();
         glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glCheckError();
         // Render quad
         glDrawArrays(GL_TRIANGLES, 0, 6);
+        glCheckError();
         // Now advance cursors for next glyph (note that advance is number of 1/64 pixels)
         x += (ch.advance_offset >> 6) * scale; // Bitshift by 6 to get value in pixels (2^6 = 64)
     }
     glBindVertexArray(0);
+    glCheckError();
     glBindTexture(GL_TEXTURE_2D, 0);
+    glCheckError();
 }
 

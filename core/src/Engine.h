@@ -49,12 +49,10 @@ class Engine {
   void spawnRandomEnemy();
   void collidePlayersWithEnemies();
   bool collide(Player::Player *p, Player::Player *e);
-  void drawCursor();
   void render();
-  void drawAim();
   void collideBulletsWithEnemies();
   void flashScreenRed();
-  void setScreenColorBlue();
+  void setScreenColorBlack();
   void playerDies(Player::Ally* p);
   void resetEnemies();
   void drawEnemies();

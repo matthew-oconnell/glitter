@@ -83,7 +83,7 @@ void Engine::loop() {
     auto now = std::chrono::system_clock::now();
     auto game_time = std::chrono::duration_cast<std::chrono::milliseconds>(now - game_start);
     if(game_frame_count % 10 == 0)
-      setScreenColorBlue();
+      setScreenColorBlack();
     update();
     spawnEnemies(game_time);
     collideBulletsWithEnemies();
@@ -143,27 +143,8 @@ bool Engine::collide(Player::Player *p, Player::Player *e) {
   auto e_bounds = e->getBoundsWorld();
   return Math::AABB::intersect(e_bounds, p_bounds);
 }
-void Engine::drawCursor() {
-  auto screen_coords = input->getCursorLocation();
-  auto [width, height] = window->getWidthAndHeight();
-  screen_coords = Math::AABB::clamp({{0.0f, 0.0f},{float(width), float(height)}}, screen_coords);
-  glfwSetCursorPos(window->getGLFWHandle(), screen_coords.x, screen_coords.y);
-  auto world_coords = screen.convertScreenToWorld(screen_coords);
-  std::array<Math::Vec2d, 3> coords = { world_coords + Math::Vec2d{ 0.0f,  0.0f},
-                                        world_coords + Math::Vec2d{-0.08f, -0.3f},
-                                        world_coords + Math::Vec2d{ 0.08f, -0.3f} };
-  glColor4f(1.0f,1.0f,1.0f,1.0f);
-  glBegin(GL_TRIANGLES);
-  for(auto c : coords) {
-    c = screen.convertWorldToRender(c);
-    glVertex2d(c.x, c.y);
-  }
-  glEnd();
-}
 void Engine::render() {
   clear();
-//  drawCursor();
-  drawAim();
   drawEnemies();
   drawBullets();
   drawPlayers();
@@ -194,12 +175,6 @@ void Engine::drawEnemies() {
 Screen* Engine::getScreen() {
   return &screen;
 }
-void Engine::drawAim() {
-  auto player_location = allies.front()->getWorldLocation();
-  auto cursor_location = screen.convertScreenToWorld(input->getCursorLocation());
-  auto line = Graphics::Line(player_location, cursor_location);
-  line.render({0.0f, 0.0f}, &screen);
-}
 void Engine::collideBulletsWithEnemies() {
   for(auto b_iter = bullets.begin(); b_iter != bullets.end();){
     auto &b = *b_iter;
@@ -221,8 +196,8 @@ void Engine::collideBulletsWithEnemies() {
 void Engine::flashScreenRed() {
   glClearColor(0.7f, 0.2f, 0.2f, 0.5f);
 }
-void Engine::setScreenColorBlue() {
-  glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
+void Engine::setScreenColorBlack() {
+  glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 }
 void Engine::playerDies(Player::Ally* p) {
   p->setWorldLocation({4.0f, 4.0f});

@@ -1,7 +1,9 @@
 #pragma once
+#include <iostream>
+#include <string>
 #include <GL/glew.h>
 
-GLenum glCheckError_(const char *file, int line) {
+inline GLenum glCheckError_(const char *file, int line) {
   GLenum errorCode;
   while ((errorCode = glGetError()) != GL_NO_ERROR)
   {
