@@ -78,9 +78,13 @@ void Engine::loop() {
   glUniformMatrix4fv(glGetUniformLocation(text_shader.getId(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
   unsigned int game_frame_count = 0;
+  unsigned int fps_frame_count = 0;
+  auto now = std::chrono::system_clock::now();
+  auto last_fps_time_reset = now;
   while(!closed()){
-    auto now = std::chrono::system_clock::now();
+    now = std::chrono::system_clock::now();
     auto game_time = std::chrono::duration_cast<std::chrono::milliseconds>(now - game_start);
+    auto fps_counter_time = std::chrono::duration_cast<std::chrono::milliseconds>(now - last_fps_time_reset);
     if(game_frame_count % 10 == 0)
       setScreenColorBlue();
     update();
@@ -88,10 +92,18 @@ void Engine::loop() {
     collideBulletsWithEnemies();
     collidePlayersWithEnemies();
     render();
-    text.renderText(text_shader,"This sentence took me all day.", 100, 25, 1.0, {0.5,0.8,0.2,1.0});
-
     game_frame_count++;
-    std::cout << "total frames: " << game_frame_count << " FPS: " << game_frame_count/(game_time.count()/1000.0) << std::endl;
+    fps_frame_count++;
+    double fps = fps_frame_count / (fps_counter_time.count()/1000.0);
+    std::string fps_string = std::to_string(fps);
+    text.renderText(text_shader,"FPS: " + fps_string, 100.0f, 25.0f, 1.0f, {0.5f,0.8f,0.2f,1.0f});
+
+    if(fps_counter_time.count() > 1000.0){
+      fps_frame_count = 0;
+      last_fps_time_reset = std::chrono::system_clock::now();
+    }
+
+//    std::cout << "total frames: " << game_frame_count << " FPS: " << game_frame_count/(game_time.count()/1000.0) << std::endl;
   }
 }
 Window* Engine::getWindow() {

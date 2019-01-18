@@ -2,35 +2,15 @@
 
 #include <string>
 #include <lodepng.h>
-#include <File.h>
 #include <Vector2d.h>
 #include <Vec3d.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <glDebug.h>
 #include "Texture.h"
 using namespace Glitter;
 using namespace Glitter::Graphics;
-GLenum glCheckError_(const char *file, int line) {
-    GLenum errorCode;
-    while ((errorCode = glGetError()) != GL_NO_ERROR)
-    {
-        std::string error;
-        switch (errorCode)
-        {
-            case GL_INVALID_ENUM:                  error = "INVALID_ENUM"; break;
-            case GL_INVALID_VALUE:                 error = "INVALID_VALUE"; break;
-            case GL_INVALID_OPERATION:             error = "INVALID_OPERATION"; break;
-            case GL_STACK_OVERFLOW:                error = "STACK_OVERFLOW"; break;
-            case GL_STACK_UNDERFLOW:               error = "STACK_UNDERFLOW"; break;
-            case GL_OUT_OF_MEMORY:                 error = "OUT_OF_MEMORY"; break;
-            case GL_INVALID_FRAMEBUFFER_OPERATION: error = "INVALID_FRAMEBUFFER_OPERATION"; break;
-        }
-        std::cout << error << " | " << file << " (" << line << ")" << std::endl;
-    }
-    return errorCode;
-}
-#define glCheckError() glCheckError_(__FILE__, __LINE__)
 
 Texture::Texture(std::string filename, float width, float height) :
         half_width(0.5f*width), half_height(0.5f*height),
@@ -94,7 +74,9 @@ GLuint Texture::loadTexture(std::string filename){
         }
     }
 
+    glCheckError();
     glGenTextures(1, &texture_handle);
+    glCheckError();
     glBindTexture(GL_TEXTURE_2D, texture_handle);
     glCheckError();
 
@@ -107,6 +89,7 @@ GLuint Texture::loadTexture(std::string filename){
     glCheckError();
     glGenerateMipmap(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, 0);
+    glCheckError();
 
     return texture_handle;
 }
@@ -120,7 +103,6 @@ void Texture::render(Glitter::Math::Vec2d world_location, Glitter::Screen *s) {
             Math::Vec3d{-half_width+world_location.x,  -half_width+world_location.y, 0.0}
     };
     world_location = s->convertWorldToRender(world_location);
-    printf("WL: %f %f\n",world_location.x, world_location.y);
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texture_handle);
