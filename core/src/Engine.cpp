@@ -83,14 +83,11 @@ void Engine::loop() {
     auto game_time = std::chrono::duration_cast<std::chrono::milliseconds>(now - game_start);
     if(game_frame_count % 10 == 0)
       setScreenColorBlue();
-//    update();
-//    spawnEnemies(game_time);
-//    collideBulletsWithEnemies();
-//    collidePlayersWithEnemies();
-      window->update();
-      clear();
-      drawPlayers();
-//    render();
+    update();
+    spawnEnemies(game_time);
+    collideBulletsWithEnemies();
+    collidePlayersWithEnemies();
+    render();
     text.renderText(text_shader,"This sentence took me all day.", 100, 25, 1.0, {0.5,0.8,0.2,1.0});
 
     game_frame_count++;
@@ -116,7 +113,7 @@ void Engine::spawnRandomEnemy() {
   static std::random_device rd;
   static std::mt19937 gen(rd());
   auto enemy = std::make_shared<Player::Enemy>(&screen);
-  enemy->setModel(std::make_shared<Graphics::Texture>("assets/enemy.png", 0.6f, 0.6f));
+  enemy->setModel(std::make_shared<Graphics::Texture>("assets/enemy.png", 0.4f, 0.4f));
   auto [lo, hi] = screen.rangeInWorldCoordinates();
   std::uniform_real_distribution x_distribution(lo.x, hi.x);
   std::uniform_real_distribution y_distribution(lo.y, hi.y);

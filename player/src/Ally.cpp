@@ -1,4 +1,5 @@
 #include <Square.h>
+#include <Texture.h>
 #include "Ally.h"
 using namespace Glitter;
 using namespace Player;
@@ -38,6 +39,6 @@ void Ally::shoot() {
   direction = direction.normal();
   float bullet_speed = 0.4f;
   auto bullet = std::make_shared<Bullet>(world_location, direction, bullet_speed);
-  bullet->setModel(std::make_shared<Graphics::Square>(0.1f, 0.1f, std::array<GLfloat, 4>{0.863f, 0.078f, 0.235f, 1.0f}));
+  bullet->setModel(std::make_shared<Graphics::Texture>("assets/bullet.png", 0.1f, 0.1f));
   shoot_bullets_here(bullet);
 }

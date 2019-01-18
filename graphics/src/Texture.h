@@ -2,9 +2,12 @@
 
 #include <string>
 #include <GL/glew.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include "Model.h"
 #include "Square.h"
 #include "Shader.h"
+
 namespace Glitter::Graphics {
   class Texture : public Model {
   public:
@@ -18,6 +21,7 @@ namespace Glitter::Graphics {
       GLuint texture_handle;
       GLuint VAO, VBO, EBO;
       Shader shader;
+      glm::vec3 origin[4];
       unsigned width, height;
 
       GLuint loadTexture(std::string filename);

@@ -39,12 +39,16 @@ Texture::Texture(std::string filename, float width, float height) :
     initializeVertexData();
 }
 void Texture::initializeVertexData() {
+    origin[0] = { half_width, half_height, 0.0f};
+    origin[1] = { half_width,-half_height, 0.0f};
+    origin[2] = {-half_width,-half_height, 0.0f};
+    origin[3] = {-half_width, half_height, 0.0f};
     float vertices[] = {
             // positions          // texture coords
-            0.5f,  0.5f, 0.0f,   1.0f, 1.0f, // top right
-            0.5f, -0.5f, 0.0f,   1.0f, 0.0f, // bottom right
-            -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, // bottom left
-            -0.5f,  0.5f, 0.0f,   0.0f, 1.0f  // top left
+             half_width,  half_height, 0.0f,   1.0f, 1.0f, // top right
+             half_width, -half_height, 0.0f,   1.0f, 0.0f, // bottom right
+            -half_width, -half_height, 0.0f,   0.0f, 0.0f, // bottom left
+            -half_width,  half_height, 0.0f,   0.0f, 1.0f  // top left
     };
     unsigned int indices[] = {
             0, 1, 3, // first triangle
@@ -115,16 +119,14 @@ void Texture::render(Glitter::Math::Vec2d world_location, Glitter::Screen *s) {
             Math::Vec3d{ half_width+world_location.x,  -half_width+world_location.y, 0.0},
             Math::Vec3d{-half_width+world_location.x,  -half_width+world_location.y, 0.0}
     };
-    for(auto& c : corners_world){
-        auto c2d = s->convertWorldToRender({c.x, c.y});
-        c.x = c2d.x;
-        c.y = c2d.y;
-    }
+    world_location = s->convertWorldToRender(world_location);
+    printf("WL: %f %f\n",world_location.x, world_location.y);
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texture_handle);
     glm::mat4 trans = glm::mat4(1.0f);
-    trans = glm::scale(trans, glm::vec3(0.2, 0.2, 0.2));
+    trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
+    trans = glm::translate(trans, glm::vec3(world_location.x, world_location.y, 0.0f));
     trans = glm::rotate(trans, glm::radians(180.0f), glm::vec3(0.0, 0.0, 1.0));
     shader.enable();
     unsigned int transformLoc = glGetUniformLocation(shader.getId(), "transform");
