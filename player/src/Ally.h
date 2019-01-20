@@ -7,6 +7,7 @@
 #include "Input.h"
 #include "Player.h"
 #include "Bullet.h"
+#include "Weapon.h"
 
 namespace Glitter {
 namespace Player {
@@ -19,7 +20,7 @@ class Ally :public Player {
   Utilities::ResourceManager& resource_manager;
   Input* input;
   Screen* screen;
-  std::function<void(std::shared_ptr<Bullet>)> shoot_bullets_here;
+  Weapon weapon;
   Math::AABB::Box2d last_screen_range;
   void move(float speed);
   void shoot();

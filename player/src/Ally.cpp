@@ -5,7 +5,8 @@ using namespace Glitter;
 using namespace Player;
 
 Ally::Ally(Utilities::ResourceManager& rm, Input* input, Screen* screen_in, std::function<void(std::shared_ptr<Bullet>)> s)
-        :resource_manager(rm), input(input), screen(screen_in), shoot_bullets_here(s){
+        :resource_manager(rm), input(input), screen(screen_in), weapon(rm) {
+  weapon.putBulletsHere(s);
 }
 void Ally::update() {
   screen->rangeInWorldCoordinates();
@@ -32,8 +33,6 @@ void Ally::render(Screen *s) {
     last_screen_range = s->rangeInWorldCoordinates();
 }
 void Ally::shoot() {
-  Weapon weapon(resource_manager);
-  weapon.putBulletsHere(shoot_bullets_here);
   if(! input->pressed(Input::SPACE)) return;
   weapon.shoot(world_location);
 }
