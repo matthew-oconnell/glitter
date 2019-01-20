@@ -5,7 +5,7 @@
 using namespace Glitter;
 using namespace Math;
 
-TEST_CASE("Vector2d exists") {
+TEST_CASE("Vector2d isAlive") {
     Vec2d v{50.0f, 12.0f};
     REQUIRE(v.x == 50.0f);
     REQUIRE(v.y == 12.0f);

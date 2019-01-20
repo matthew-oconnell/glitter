@@ -41,6 +41,18 @@ Engine::Engine(std::string title)
   player_one->setWorldLocation({5.0f, 5.0f});
   addAlly(player_one);
 }
+template <typename Killable>
+void eraseDead(std::vector<std::shared_ptr<Killable>>& killables){
+  for(auto iter = killables.begin(); iter != killables.end();) {
+    auto* e = iter->get();
+    if(!e->isAlive()){
+      iter = killables.erase(iter);
+    } else {
+      ++iter;
+    }
+  }
+}
+
 void Engine::update() {
   for(auto& e : enemies)
     e->update();
@@ -85,6 +97,8 @@ void Engine::loop() {
     spawnEnemies(game_time);
     collideBulletsWithEnemies();
     collidePlayersWithEnemies();
+    eraseDead(bullets);
+    eraseDead(enemies);
     render();
     game_frame_count++;
     fps_counter.frame();
@@ -123,13 +137,11 @@ void Engine::addEnemy(std::shared_ptr<Player::Enemy> e) {
   enemies.emplace_back(e);
 }
 void Engine::collidePlayersWithEnemies() {
-  for(auto& p : allies){
-    for(auto e_iter = enemies.begin(); e_iter != enemies.end();){
-      if(collide(p.get(), e_iter->get())){
+  for(auto& p : allies) {
+    for (auto &e : enemies) {
+      if (collide(p.get(), e.get())) {
         playerDies(p.get());
-        return;
-      } else {
-        ++e_iter;
+        e->die();
       }
     }
   }
@@ -171,25 +183,20 @@ void Engine::drawEnemies() {
 Screen* Engine::getScreen() {
   return &screen;
 }
+
 void Engine::collideBulletsWithEnemies() {
-  for(auto b_iter = bullets.begin(); b_iter != bullets.end();){
-    auto &b = *b_iter;
+  for(auto& b : bullets){
     auto bullet_bounds = b->getBoundsWorld();
-    bool bullet_erased = false;
-    for(auto e_iter = enemies.begin(); e_iter != enemies.end();){
-      auto& e = *e_iter;
+    for(auto& e : enemies){
       auto enemy_bounds = e->getBoundsWorld();
       if(Math::AABB::intersect(enemy_bounds, bullet_bounds)){
-        e_iter = enemies.erase(e_iter);
-        b_iter = bullets.erase(b_iter);
-        bullet_erased = true;
-        break;
-      } else {
-        ++e_iter;
+        if(e->isAlive()) {
+          b->explode();
+          e->die();
+          break;
+        }
       }
     }
-    if(! bullet_erased)
-      ++b_iter;
   }
 }
 void Engine::flashScreenRed() {

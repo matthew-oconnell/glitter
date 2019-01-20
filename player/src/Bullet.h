@@ -10,8 +10,11 @@ class Bullet {
   void setModel(std::shared_ptr<Graphics::Model> m);
   void render(Screen* s);
   void update();
+  bool isAlive() const;
+  void explode();
   Math::AABB::Box2d getBoundsWorld() const;
  private:
+  bool alive = true;
   Math::Vec2d world_location;
   std::shared_ptr<Graphics::Model> model;
   Math::Vec2d direction;

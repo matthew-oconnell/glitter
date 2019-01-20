@@ -3,7 +3,7 @@
 using namespace Glitter;
 using namespace Math;
 
-TEST_CASE("Vector3d exists"){
+TEST_CASE("Vector3d isAlive"){
     Vec3d v{1.0f, 0.0f, 0.0f};
 }
 TEST_CASE("Vector3d scale") {

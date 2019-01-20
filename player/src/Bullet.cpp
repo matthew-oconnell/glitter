@@ -22,3 +22,9 @@ Bullet::Bullet(Math::Vec2d world_coords, Math::Vec2d d, float s)
 : world_location(world_coords), direction(d), speed(s){
 
 }
+void Bullet::explode() {
+  alive = false;
+}
+bool Bullet::isAlive() const {
+  return alive;
+}

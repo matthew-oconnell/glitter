@@ -21,3 +21,9 @@ void Enemy::setTarget(Glitter::Player::Player* p) {
 }
 Enemy::Enemy(Glitter::Screen *s) :screen(s) {
 }
+void Enemy::die() {
+  health = 0;
+}
+bool Enemy::isAlive() const {
+  return health > 0;
+}
