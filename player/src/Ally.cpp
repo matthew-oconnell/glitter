@@ -10,7 +10,7 @@ void Ally::update() {
   screen->rangeInWorldCoordinates();
   float speed = 0.2f;
   move(speed);
-  world_location = Math::AABB::clamp(screen->rangeInWorldCoordinates(), world_location);
+  setWorldLocation(Math::AABB::clamp(screen->rangeInWorldCoordinates(), world_location));
   shoot();
 }
 void Ally::move(float speed) {
@@ -24,7 +24,7 @@ void Ally::move(float speed) {
   if(input->pressed(Input::S))
         a += Math::Vec2d{0.0f, -speed};
 
-  world_location += a;
+  setWorldLocation(world_location+a);
 }
 void Ally::render(Screen *s) {
     Player::render(s);

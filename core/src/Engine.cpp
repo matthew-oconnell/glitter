@@ -37,8 +37,7 @@ Engine::Engine(std::string title)
   };
   auto player_one = std::make_shared<Glitter::Player::Ally>(resource_manager,getInput(), getScreen(), shoot);
   std::cout << "Trying to create player one." << std::endl;
-  auto player_render_size = screen.convertWorldToRender({1.0f, 2.0f});
-  player_one->setModel(std::make_shared<Glitter::Graphics::Texture>(resource_manager,"assets/ufo.png", player_render_size.x, player_render_size.y));
+  player_one->setModel(std::make_shared<Glitter::Graphics::Texture>(resource_manager,"assets/ufo.png", 1.0f, 1.0f));
   player_one->setWorldLocation({5.0f, 5.0f});
   addAlly(player_one);
 }

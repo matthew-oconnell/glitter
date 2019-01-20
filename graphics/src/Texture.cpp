@@ -6,6 +6,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/string_cast.hpp>
 #include <glDebug.h>
 #include "Texture.h"
 using namespace Glitter;
@@ -56,22 +58,18 @@ GLuint Texture::getTexture(std::string filename){
 }
 void Texture::render(Glitter::Math::Vec2d world_location, Glitter::Screen *s) {
 
-    world_location = s->convertWorldToRender(world_location);
-
     glCheckError();
     glActiveTexture(GL_TEXTURE0);
-    glCheckError();
     glBindTexture(GL_TEXTURE_2D, texture_handle);
-    glCheckError();
     glm::mat4 trans = glm::mat4(1.0f);
     trans = glm::translate(trans, glm::vec3(world_location.x, world_location.y, 0.0f));
     trans = glm::rotate(trans, glm::radians(180.0f), glm::vec3(0.0, 0.0, 1.0));
     shader.enable();
-    unsigned int transformLoc = glGetUniformLocation(shader.getId(), "transform");
-    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
-    glCheckError();
+    auto [lo, hi] = s->rangeInWorldCoordinates();
+    glm::mat4 projection = glm::ortho(lo.x, hi.x, lo.y, hi.y);
+    glUniformMatrix4fv(glGetUniformLocation(shader.getId(), "transform"), 1, GL_FALSE, glm::value_ptr(trans));
+    glUniformMatrix4fv(glGetUniformLocation(shader.getId(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
     glBindVertexArray(VAO);
-    glCheckError();
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     glCheckError();
 }
