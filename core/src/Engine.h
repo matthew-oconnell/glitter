@@ -12,6 +12,7 @@
 #include <Screen.h>
 #include <Enemy.h>
 #include <Bullet.h>
+#include <PowerUp.h>
 #include <Ally.h>
 #include <Text.h>
 
@@ -48,19 +49,24 @@ class Engine {
   std::vector<std::shared_ptr<Player::Ally>> allies;
   std::vector<std::shared_ptr<Player::Enemy>> enemies;
   std::vector<std::shared_ptr<Player::Bullet>> bullets;
+  std::vector<std::shared_ptr<Player::PowerUp>> power_ups;
   void spawnEnemies(std::chrono::milliseconds game_time);
+  void spawnPowerUps(std::chrono::milliseconds game_time);
   void spawnRandomEnemy();
   void collidePlayersWithEnemies();
+  void collideBulletsWithEnemies();
+  void collidePlayersWithPowerUps();
   bool collide(Player::Player *p, Player::Player *e);
   void render();
-  void collideBulletsWithEnemies();
   void flashScreenRed();
   void setScreenColorBlack();
   void playerDies(Player::Ally* p);
-  void killAllEnemies();
+  void clearAllEnemies();
   void drawEnemies();
   void drawBullets();
   void drawPlayers();
+  void drawPowerUps();
+  void clearAllPowerUps();
 };
 }
 }

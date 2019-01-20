@@ -95,10 +95,13 @@ void Engine::loop() {
       setScreenColorBlack();
     update();
     spawnEnemies(game_time);
+    spawnPowerUps(game_time);
     collideBulletsWithEnemies();
     collidePlayersWithEnemies();
+    collidePlayersWithPowerUps();
     eraseDead(bullets);
     eraseDead(enemies);
+    eraseDead(power_ups);
     render();
     game_frame_count++;
     fps_counter.frame();
@@ -125,6 +128,18 @@ void Engine::spawnEnemies(std::chrono::milliseconds game_time) {
   if(elapsed_time_since_last_enemy_in_seconds > spawn_rate_in_seconds) {
     spawnRandomEnemy();
     last_enemy_spawned = game_time;
+  }
+}
+void Engine::spawnPowerUps(std::chrono::milliseconds game_time) {
+  double spawn_rate_in_seconds = 5.0;
+  static std::chrono::milliseconds last_spawned;
+  auto elapsed_time_since_last_spawned = (game_time.count() - last_spawned.count()) / 1000.0;
+  if(elapsed_time_since_last_spawned > spawn_rate_in_seconds) {
+    auto power_up = std::make_shared<Player::PowerUp>(resource_manager, Math::Vec2d{10.0f,10.0f});
+    auto model = std::make_shared<Graphics::Texture>(resource_manager, "assets/bullet.png", 1.0f, 1.0f);
+    power_up->setModel(model);
+    power_ups.push_back(power_up);
+    last_spawned = game_time;
   }
 }
 void Engine::spawnRandomEnemy() {
@@ -165,6 +180,7 @@ void Engine::render() {
   drawEnemies();
   drawBullets();
   drawPlayers();
+  drawPowerUps();
 }
 void Engine::drawPlayers() {
   for(auto& p : allies){
@@ -189,6 +205,13 @@ void Engine::drawEnemies() {
       e->render(&screen);
   }
 }
+void Engine::drawPowerUps() {
+  for(auto& u : power_ups){
+    auto [lo, hi] = u->getBoundsWorld();
+    if(screen.onScreen(lo, hi))
+      u->render(&screen);
+  }
+}
 Screen* Engine::getScreen() {
   return &screen;
 }
@@ -209,6 +232,18 @@ void Engine::collideBulletsWithEnemies() {
     }
   }
 }
+
+void Engine::collidePlayersWithPowerUps() {
+  for(auto& a : allies){
+    for(auto& u : power_ups){
+      if(Math::AABB::intersect(a->getBoundsWorld(), u->getBoundsWorld())){
+        u->powerUp(a.get(),
+            [this](std::shared_ptr<Player::Bullet> b){bullets.push_back(b);});
+        u->consume();
+      }
+    }
+  }
+}
 void Engine::flashScreenRed() {
   glClearColor(0.7f, 0.2f, 0.2f, 0.5f);
 }
@@ -218,11 +253,20 @@ void Engine::setScreenColorBlack() {
 void Engine::playerDies(Player::Ally* p) {
   p->setWorldLocation({4.0f, 4.0f});
   flashScreenRed();
-  killAllEnemies();
+  clearAllEnemies();
+  clearAllPowerUps();
   score = 0;
+  auto w = std::make_shared<Player::SingleShooter>(resource_manager);
+  w->putBulletsHere([this](std::shared_ptr<Player::Bullet> b){bullets.push_back(b);});
+  p->equipWeapon(w);
 }
-void Engine::killAllEnemies() {
+void Engine::clearAllEnemies() {
   for(auto& e : enemies){
     e->die();
+  }
+}
+void Engine::clearAllPowerUps() {
+  for(auto& p : power_ups){
+    p->consume();
   }
 }
