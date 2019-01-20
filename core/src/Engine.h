@@ -42,6 +42,8 @@ class Engine {
   std::shared_ptr<GLFWInput> input;
   Text text;
   Utilities::ResourceManager resource_manager;
+  unsigned int score = 0;
+  unsigned int high_score = 0;
   std::chrono::system_clock::time_point game_start;
   std::vector<std::shared_ptr<Player::Ally>> allies;
   std::vector<std::shared_ptr<Player::Enemy>> enemies;
@@ -55,7 +57,7 @@ class Engine {
   void flashScreenRed();
   void setScreenColorBlack();
   void playerDies(Player::Ally* p);
-  void resetEnemies();
+  void killAllEnemies();
   void drawEnemies();
   void drawBullets();
   void drawPlayers();

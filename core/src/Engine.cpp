@@ -102,8 +102,14 @@ void Engine::loop() {
     render();
     game_frame_count++;
     fps_counter.frame();
-    std::string fps_string = std::to_string(fps_counter.fps());
-    text.renderText(text_shader,"FPS: " + fps_string, 100.0f, 25.0f, 1.0f, {0.5f,0.8f,0.2f,1.0f});
+    if(score > high_score)
+      high_score = score;
+    std::string score_string = std::to_string(score);
+    std::string high_score_string = std::to_string(high_score);
+    text.renderText(text_shader,"Score: " + score_string + "  High Score: " + high_score_string, 100.0f, 25.0f, 1.0f, {0.9f,0.8f,0.2f,1.0f});
+
+//    std::string fps_string(std::to_string(int(std::ceil(fps_counter.fps()))));
+//    text.renderText(text_shader,"FPS: " + fps_string, 900.0f, 25.0f, 0.5f, {0.5f,0.8f,0.2f,1.0f});
   }
 }
 Window* Engine::getWindow() {
@@ -125,6 +131,7 @@ void Engine::spawnRandomEnemy() {
   static std::random_device rd;
   static std::mt19937 gen(rd());
   auto enemy = std::make_shared<Player::Enemy>(&screen);
+  enemy->setHealth(2);
   enemy->setModel(std::make_shared<Graphics::Texture>(resource_manager,"assets/enemy.png", 0.4f, 0.4f));
   auto [lo, hi] = screen.rangeInWorldCoordinates();
   std::uniform_real_distribution y_distribution(lo.y, hi.y);
@@ -139,9 +146,11 @@ void Engine::addEnemy(std::shared_ptr<Player::Enemy> e) {
 void Engine::collidePlayersWithEnemies() {
   for(auto& p : allies) {
     for (auto &e : enemies) {
-      if (collide(p.get(), e.get())) {
-        playerDies(p.get());
-        e->die();
+      if(e->isAlive()) {
+        if (collide(p.get(), e.get())) {
+          e->die();
+          playerDies(p.get());
+        }
       }
     }
   }
@@ -192,7 +201,8 @@ void Engine::collideBulletsWithEnemies() {
       if(Math::AABB::intersect(enemy_bounds, bullet_bounds)){
         if(e->isAlive()) {
           b->explode();
-          e->die();
+          e->takeDamage(b->damage());
+          score += 10;
           break;
         }
       }
@@ -208,8 +218,11 @@ void Engine::setScreenColorBlack() {
 void Engine::playerDies(Player::Ally* p) {
   p->setWorldLocation({4.0f, 4.0f});
   flashScreenRed();
-  resetEnemies();
+  killAllEnemies();
+  score = 0;
 }
-void Engine::resetEnemies() {
-  enemies.clear();
+void Engine::killAllEnemies() {
+  for(auto& e : enemies){
+    e->die();
+  }
 }

@@ -18,8 +18,8 @@ Math::AABB::Box2d Bullet::getBoundsWorld() const {
 void Bullet::setModel(std::shared_ptr<Graphics::Model> m) {
   model = std::move(m);
 }
-Bullet::Bullet(Math::Vec2d world_coords, Math::Vec2d d, float s)
-: world_location(world_coords), direction(d), speed(s){
+Bullet::Bullet(Math::Vec2d world_coords, Math::Vec2d d, float s, int dmg)
+: world_location(world_coords), direction(d), speed(s), damage_amount(dmg){
 
 }
 void Bullet::explode() {
@@ -27,4 +27,7 @@ void Bullet::explode() {
 }
 bool Bullet::isAlive() const {
   return alive;
+}
+int Bullet::damage() {
+  return damage_amount;
 }

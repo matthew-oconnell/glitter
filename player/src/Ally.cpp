@@ -10,7 +10,7 @@ Ally::Ally(Utilities::ResourceManager& rm, Input* input, Screen* screen_in, std:
 }
 void Ally::update() {
   screen->rangeInWorldCoordinates();
-  float speed = 0.2f;
+  float speed = 0.1f;
   move(speed);
   setWorldLocation(Math::AABB::clamp(screen->rangeInWorldCoordinates(), world_location));
   shoot();

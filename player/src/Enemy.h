@@ -9,6 +9,8 @@ class Enemy : public Player {
   void update();
   void setTarget(Player* p);
   void die();
+  void takeDamage(int damage);
+  void setHealth(int h);
   bool isAlive() const;
  private:
   int health = 1;
