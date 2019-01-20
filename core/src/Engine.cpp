@@ -175,18 +175,21 @@ void Engine::collideBulletsWithEnemies() {
   for(auto b_iter = bullets.begin(); b_iter != bullets.end();){
     auto &b = *b_iter;
     auto bullet_bounds = b->getBoundsWorld();
+    bool bullet_erased = false;
     for(auto e_iter = enemies.begin(); e_iter != enemies.end();){
       auto& e = *e_iter;
       auto enemy_bounds = e->getBoundsWorld();
       if(Math::AABB::intersect(enemy_bounds, bullet_bounds)){
         e_iter = enemies.erase(e_iter);
         b_iter = bullets.erase(b_iter);
+        bullet_erased = true;
         break;
       } else {
         ++e_iter;
       }
     }
-    ++b_iter;
+    if(! bullet_erased)
+      ++b_iter;
   }
 }
 void Engine::flashScreenRed() {

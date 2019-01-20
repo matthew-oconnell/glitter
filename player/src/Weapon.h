@@ -48,7 +48,7 @@ class Weapon {
     shoot_bullets_here = std::move(here);
   }
  protected:
-  float bullet_speed = 0.4f;
+  float bullet_speed = 0.3f;
   unsigned int cooldown_in_ms = 200;
   Utilities::ResourceManager& resource_manager;
   std::function<void(std::shared_ptr<Bullet>)> shoot_bullets_here;
