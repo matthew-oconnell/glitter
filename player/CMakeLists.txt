@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 3.10)
 
 set(SOURCES src/Ally.cpp src/Ally.h
         src/Bullet.h src/Bullet.cpp
-        src/Input.h src/Idiot.cpp src/Idiot.h src/Player.h src/Enemy.cpp src/Enemy.h)
+        src/Input.h src/Idiot.cpp src/Idiot.h src/Player.h src/Enemy.cpp src/Enemy.h
+        src/Weapon.h)
 
 add_library(Player STATIC ${SOURCES})
 add_library(Glitter::Player ALIAS Player)

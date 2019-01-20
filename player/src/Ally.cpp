@@ -1,5 +1,6 @@
 #include <Texture.h>
 #include "Ally.h"
+#include "Weapon.h"
 using namespace Glitter;
 using namespace Player;
 
@@ -31,13 +32,8 @@ void Ally::render(Screen *s) {
     last_screen_range = s->rangeInWorldCoordinates();
 }
 void Ally::shoot() {
+  Weapon weapon(resource_manager);
+  weapon.putBulletsHere(shoot_bullets_here);
   if(! input->pressed(Input::SPACE)) return;
-
-  auto cursor_location = screen->convertScreenToWorld(input->getCursorLocation());
-  auto direction = cursor_location - world_location;
-  direction = direction.normal();
-  float bullet_speed = 0.4f;
-  auto bullet = std::make_shared<Bullet>(world_location, direction, bullet_speed);
-  bullet->setModel(std::make_shared<Graphics::Texture>(resource_manager, "assets/bullet.png", 0.1f, 0.1f));
-  shoot_bullets_here(bullet);
+  weapon.shoot(world_location);
 }

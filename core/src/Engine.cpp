@@ -113,9 +113,8 @@ void Engine::spawnRandomEnemy() {
   auto enemy = std::make_shared<Player::Enemy>(&screen);
   enemy->setModel(std::make_shared<Graphics::Texture>(resource_manager,"assets/enemy.png", 0.4f, 0.4f));
   auto [lo, hi] = screen.rangeInWorldCoordinates();
-  std::uniform_real_distribution x_distribution(lo.x, hi.x);
   std::uniform_real_distribution y_distribution(lo.y, hi.y);
-  auto spawn_location = Math::Vec2d{float(x_distribution(gen)), float(y_distribution(gen))};
+  auto spawn_location = Math::Vec2d{hi.x, float(y_distribution(gen))};
   enemy->setWorldLocation(spawn_location);
   enemy->setTarget(allies.front().get());
   addEnemy(enemy);
