@@ -14,6 +14,7 @@ class SoLoudEngine : public Glitter::Audio {
     SoLoud::Wav wav;
   };
   SoLoudEngine();
+  ~SoLoudEngine();
   Clip* getClip(std::string asset_path) override;
  private:
   SoLoud::Soloud soloud;

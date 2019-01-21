@@ -8,13 +8,13 @@ using namespace Player;
 Ally::Ally(Engine* e, std::function<void(std::shared_ptr<Bullet>)> s)
     : camera(e->getCamera()),
       input(e->getInput()),
-      weapon(std::make_shared<SingleShooter>(e->getModelDatabase())) {
+      weapon(std::make_shared<SingleShooter>(e)) {
   weapon->putBulletsHere(s);
 }
 void Ally::update() {
   float speed = 0.1f;
   move(speed);
-  setWorldLocation(Math::AABB::clamp(camera->rangeInWorldCoordinates(), world_location));
+  Player::setWorldLocation(Math::AABB::clamp(camera->rangeInWorldCoordinates(), world_location));
   shoot();
 }
 void Ally::move(float speed) {
@@ -37,8 +37,9 @@ void Ally::shoot() {
   if(! input->pressed(Input::SPACE)) return;
   if(weapon == nullptr)
     printf("Ally has no weapon equipped\n");
-  else
+  else {
     weapon->shoot(world_location);
+  }
 }
 void Ally::equipWeapon(std::shared_ptr<Weapon> w) {
   weapon = std::move(w);

@@ -12,23 +12,25 @@ namespace Glitter {
 namespace Player {
 class Weapon {
  public:
-  inline Weapon(ModelDatabase* rm) : resource_manager(rm),
-                                     fire_bullets_here(nullptr){
+  inline Weapon(Engine* engine) : engine(engine),
+                                  fire_bullets_here(nullptr){
   }
   virtual void shoot(const Math::Vec2d& world_location) = 0;
   inline void putBulletsHere(std::function<void(std::shared_ptr<Bullet>)> here) {
     fire_bullets_here = std::move(here);
   }
  protected:
-  ModelDatabase* resource_manager;
+  Engine* engine;
+  Audio::Clip* shoot_sound;
   std::function<void(std::shared_ptr<Bullet>)> fire_bullets_here;
 };
 
 class SingleShooter : public Weapon {
  public:
-  inline SingleShooter(ModelDatabase* rm): Weapon(rm) {
+  inline SingleShooter(Engine* engine): Weapon(engine) {
     damage = 1;
     time_last_shot = std::chrono::system_clock::from_time_t(0);
+    shoot_sound = engine->getAudioDatabase()->getClip("assets/sound_effects/laser1.mp3");
   }
 
   inline virtual void shoot(const Math::Vec2d& world_location) override {
@@ -40,9 +42,10 @@ class SingleShooter : public Weapon {
     if(elapsed > cooldown_in_ms){
       Math::Vec2d direction = {1.0f, 0.0f};
       auto bullet = std::make_shared<Bullet>(world_location, direction, bullet_speed, damage);
-      auto model = std::make_shared<Graphics::Texture>(resource_manager, "assets/textures/bullet.png", 0.1f, 0.1f);
+      auto model = std::make_shared<Graphics::Texture>(engine->getModelDatabase(), "assets/textures/bullet.png", 0.1f, 0.1f);
       bullet->setModel(model);
       fire_bullets_here(bullet);
+      shoot_sound->play();
       time_last_shot = now;
     }
   }

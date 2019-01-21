@@ -22,3 +22,6 @@ GLFWInput* Engine::getInput() {
 ModelDatabase* Engine::getModelDatabase() {
   return &model_database;
 }
+Audio* Engine::getAudioDatabase() {
+  return &audio_databse;
+}

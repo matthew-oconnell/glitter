@@ -124,7 +124,7 @@ void Game::spawnPowerUps(std::chrono::milliseconds game_time) {
   static std::chrono::milliseconds last_spawned;
   auto elapsed_time_since_last_spawned = (game_time.count() - last_spawned.count()) / 1000.0;
   if(elapsed_time_since_last_spawned > spawn_rate_in_seconds) {
-    auto power_up = std::make_shared<Player::PowerUp>(engine.getModelDatabase(), Math::Vec2d{10.0f,10.0f});
+    auto power_up = std::make_shared<Player::PowerUp>(&engine, Math::Vec2d{10.0f,10.0f});
     auto model = std::make_shared<Graphics::Texture>(engine.getModelDatabase(), "assets/textures/bullet.png", 1.0f, 1.0f);
     power_up->setModel(model);
     power_ups.push_back(power_up);
@@ -242,7 +242,7 @@ void Game::playerDies(Player::Ally* p) {
   clearAllEnemies();
   clearAllPowerUps();
   score = 0;
-  auto w = std::make_shared<Player::SingleShooter>(engine.getModelDatabase());
+  auto w = std::make_shared<Player::SingleShooter>(&engine);
   w->putBulletsHere([this](std::shared_ptr<Player::Bullet> b){bullets.push_back(b);});
   p->equipWeapon(w);
 }

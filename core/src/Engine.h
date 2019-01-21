@@ -4,6 +4,7 @@
 #include "GlewContext.h"
 #include "GLFWInput.h"
 #include "ModelDatabase.h"
+#include <SoLoudEngine.h>
 
 namespace Glitter {
 class Engine {
@@ -13,12 +14,14 @@ class Engine {
   Camera* getCamera();
   GLFWInput* getInput();
   ModelDatabase* getModelDatabase();
+  Audio* getAudioDatabase();
  private:
   Camera camera;
   Window window;
   GlewContext glew_context;
   GLFWInput input;
   ModelDatabase model_database;
+  SoLoudEngine audio_databse;
 };
 }
 

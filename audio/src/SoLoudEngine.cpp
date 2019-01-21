@@ -12,9 +12,12 @@ SoLoudEngine::Clip* SoLoudEngine::getClip(std::string asset_path) {
     printf("Error loading sound asset: %s\n", asset_path.c_str());
   return clip;
 }
+SoLoudEngine::~SoLoudEngine() {
+  soloud.deinit();
+}
 void SoLoudEngine::Clip::play() {
   soloud.play(wav);
 }
 SoLoudEngine::Clip::Clip(SoLoud::Soloud &s) : soloud(s){
-
+  wav.setVolume(0.1f);
 }

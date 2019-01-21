@@ -20,6 +20,7 @@ target_link_libraries(Engine PUBLIC glfw glew_s
         glm::glm
         Glitter::Player
         Glitter::Screen
+        Glitter::Audio
         Glitter::Text
         LodePNG::LodePNG
         )
