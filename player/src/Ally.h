@@ -22,7 +22,6 @@ class Ally :public Player {
   Input* input;
   Camera* screen;
   std::shared_ptr<Weapon> weapon;
-  Math::AABB::Box2d last_screen_range;
   void move(float speed);
   void shoot();
 };

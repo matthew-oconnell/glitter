@@ -30,7 +30,6 @@ void Ally::move(float speed) {
 }
 void Ally::render(Camera *s) {
     Player::render(s);
-    last_screen_range = s->rangeInWorldCoordinates();
 }
 void Ally::shoot() {
   if(! input->pressed(Input::SPACE)) return;
