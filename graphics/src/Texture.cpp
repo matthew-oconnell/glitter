@@ -56,7 +56,7 @@ GLuint Texture::getTexture(std::string filename){
   resource_manager.loadTexture(filename, width, height);
   return resource_manager.getTextureHandle(filename);
 }
-void Texture::render(Glitter::Math::Vec2d world_location, Glitter::Screen *s) {
+void Texture::render(Glitter::Math::Vec2d world_location, Glitter::Camera *s) {
 
     glCheckError();
     glActiveTexture(GL_TEXTURE0);

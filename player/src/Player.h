@@ -10,7 +10,7 @@ class Player {
   virtual void update() = 0;
 
   void setModel(std::shared_ptr<Graphics::Model> m);
-  virtual void render(Screen* s);
+  virtual void render(Camera* s);
   void setWorldLocation(Math::Vec2d location);
   Math::Vec2d getWorldLocation() const;
   std::tuple<Math::Vec2d, Math::Vec2d> getBoundsWorld() const;
@@ -29,7 +29,7 @@ inline Math::Vec2d Player::getWorldLocation() const {
 inline void Player::setModel(std::shared_ptr<Graphics::Model> m) {
   model = std::move(m);
 }
-inline void Player::render(Screen* screen){
+inline void Player::render(Camera* screen){
   if(model != nullptr)
     model->render(world_location, screen);
 }

@@ -5,7 +5,7 @@ namespace Glitter {
 namespace Player {
 class Enemy : public Player {
  public:
-  Enemy(Screen* s);
+  Enemy(Camera* s);
   void update();
   void setTarget(Player* p);
   void die();
@@ -14,7 +14,7 @@ class Enemy : public Player {
   bool isAlive() const;
  private:
   int health = 1;
-  Screen* screen;
+  Camera* screen;
   float speed = 0.04f;
   Player* target;
   void clampToScreen();

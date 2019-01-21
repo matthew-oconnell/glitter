@@ -7,6 +7,6 @@ Glitter::Engine::Engine():
 Glitter::Core::Window *Glitter::Engine::getWindow() {
   return &window;
 }
-Glitter::Screen *Glitter::Engine::getScreen() {
+Glitter::Camera *Glitter::Engine::getCamera() {
   return &screen;
 }

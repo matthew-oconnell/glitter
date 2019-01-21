@@ -5,7 +5,7 @@
 using namespace Glitter;
 using namespace Player;
 
-void Bullet::render(Screen* s) {
+void Bullet::render(Camera* s) {
   model->render(world_location, s);
 }
 void Bullet::update() {

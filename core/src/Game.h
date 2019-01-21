@@ -9,7 +9,7 @@
 #include "Engine.h"
 
 #include <Player.h>
-#include <Screen.h>
+#include <Camera.h>
 #include <Enemy.h>
 #include <Bullet.h>
 #include <PowerUp.h>

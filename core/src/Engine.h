@@ -6,9 +6,9 @@ class Engine {
  public:
   Engine();
   Core::Window* getWindow();
-  Screen* getScreen();
+  Camera* getCamera();
  private:
-  Screen screen;
+  Camera screen;
   Core::Window window;
 };
 }

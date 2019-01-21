@@ -7,7 +7,7 @@ using namespace Core;
 Window::~Window() {
   glfwDestroyWindow(window_handle);
 }
-Window::Window(Screen* screen, std::string title)
+Window::Window(Camera* screen, std::string title)
     : screen(screen), title(title){
 
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);

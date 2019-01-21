@@ -13,7 +13,7 @@ namespace Glitter::Graphics {
   public:
       Texture(Glitter::Utilities::ResourceManager& resource_manager, std::string filename, float model_height, float model_width);
       ~Texture();
-      void render(Math::Vec2d world_location, Screen* s) override;
+      void render(Math::Vec2d world_location, Camera* s) override;
       std::tuple<Math::Vec2d, Math::Vec2d> getWorldBounds() const override;
 
   private:

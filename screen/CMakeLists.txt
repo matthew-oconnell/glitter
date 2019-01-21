@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-set(SOURCES src/Screen.h src/Screen.cpp)
+set(SOURCES src/Camera.h src/Camera.cpp)
 
 add_library(Screen STATIC ${SOURCES})
 add_library(Glitter::Screen ALIAS Screen)

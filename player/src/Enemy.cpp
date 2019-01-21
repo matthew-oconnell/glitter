@@ -19,7 +19,7 @@ void Enemy::clampToScreen() {
 void Enemy::setTarget(Glitter::Player::Player* p) {
   target = p;
 }
-Enemy::Enemy(Glitter::Screen *s) :screen(s) {
+Enemy::Enemy(Glitter::Camera *s) :screen(s) {
 }
 void Enemy::die() {
   setHealth(0);

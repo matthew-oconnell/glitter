@@ -27,14 +27,14 @@ Game::Game(std::string title)
   glfwSetWindowUserPointer(engine.getWindow()->getGLFWHandle(), (void*)this);
   game_start = std::chrono::system_clock::now();
   float pixels_per_meter = 90.0f;
-  engine.getScreen()->setPixelsPerMeter(pixels_per_meter);
+  engine.getCamera()->setPixelsPerMeter(pixels_per_meter);
   auto [width, height] = engine.getWindow()->getWidthAndHeight();
-  engine.getScreen()->windowResize(width, height);
+  engine.getCamera()->windowResize(width, height);
 
   auto shoot = [this](std::shared_ptr<Player::Bullet> b){
     bullets.emplace_back(b);
   };
-  auto player_one = std::make_shared<Glitter::Player::Ally>(resource_manager,getInput(), engine.getScreen(), shoot);
+  auto player_one = std::make_shared<Glitter::Player::Ally>(resource_manager,getInput(), engine.getCamera(), shoot);
   std::cout << "Trying to create player one." << std::endl;
   player_one->setModel(std::make_shared<Glitter::Graphics::Texture>(resource_manager,"assets/textures/ufo.png", 1.0f, 1.0f));
   player_one->setWorldLocation({5.0f, 5.0f});
@@ -61,7 +61,7 @@ void Game::update() {
     auto& b = *b_iter;
     b->update();
     auto [lo, hi] = b->getBoundsWorld();
-    if(!engine.getScreen()->onScreen(lo, hi))
+    if(!engine.getCamera()->onScreen(lo, hi))
       b_iter = bullets.erase(b_iter);
     else
       ++b_iter;
@@ -141,10 +141,10 @@ void Game::spawnPowerUps(std::chrono::milliseconds game_time) {
 void Game::spawnRandomEnemy() {
   static std::random_device rd;
   static std::mt19937 gen(rd());
-  auto enemy = std::make_shared<Player::Enemy>(engine.getScreen());
+  auto enemy = std::make_shared<Player::Enemy>(engine.getCamera());
   enemy->setHealth(2);
   enemy->setModel(std::make_shared<Graphics::Texture>(resource_manager,"assets/textures/enemy.png", 0.4f, 0.4f));
-  auto [lo, hi] = engine.getScreen()->rangeInWorldCoordinates();
+  auto [lo, hi] = engine.getCamera()->rangeInWorldCoordinates();
   std::uniform_real_distribution y_distribution(lo.y, hi.y);
   auto spawn_location = Math::Vec2d{hi.x, float(y_distribution(gen))};
   enemy->setWorldLocation(spawn_location);
@@ -181,31 +181,31 @@ void Game::render() {
 void Game::drawPlayers() {
   for(auto& p : allies){
     auto [lo, hi] = p->getBoundsWorld();
-    if(engine.getScreen()->onScreen(lo, hi)) {
-      p->render(engine.getScreen());
+    if(engine.getCamera()->onScreen(lo, hi)) {
+      p->render(engine.getCamera());
     }
   }
 }
 void Game::drawBullets() {
   for(auto& b : bullets){
     auto [lo, hi] = b->getBoundsWorld();
-    if(engine.getScreen()->onScreen(lo, hi)) {
-      b->render(engine.getScreen());
+    if(engine.getCamera()->onScreen(lo, hi)) {
+      b->render(engine.getCamera());
     }
   }
 }
 void Game::drawEnemies() {
   for(auto& e : enemies){
     auto [lo, hi] = e->getBoundsWorld();
-    if(engine.getScreen()->onScreen(lo, hi))
-      e->render(engine.getScreen());
+    if(engine.getCamera()->onScreen(lo, hi))
+      e->render(engine.getCamera());
   }
 }
 void Game::drawPowerUps() {
   for(auto& u : power_ups){
     auto [lo, hi] = u->getBoundsWorld();
-    if(engine.getScreen()->onScreen(lo, hi))
-      u->render(engine.getScreen());
+    if(engine.getCamera()->onScreen(lo, hi))
+      u->render(engine.getCamera());
   }
 }
 

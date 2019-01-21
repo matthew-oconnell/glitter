@@ -19,7 +19,7 @@ class PowerUp {
   inline void setModel(std::shared_ptr<Graphics::Model> m){
     model = m;
   }
-  inline void render(Screen* s){
+  inline void render(Camera* s){
     model->render(world_location, s);
   }
   inline std::tuple<Math::Vec2d, Math::Vec2d> getBoundsWorld(){

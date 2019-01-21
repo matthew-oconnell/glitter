@@ -2,12 +2,12 @@
 #include <string>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <Screen.h>
+#include <Camera.h>
 namespace Glitter {
 namespace Core {
 class Window {
  public:
-  Window(Screen * screen, std::string title);
+  Window(Camera * screen, std::string title);
   ~Window();
   GLFWwindow* getGLFWHandle();
   void update();
@@ -18,7 +18,7 @@ class Window {
   int width;
   int height;
   GLFWwindow *window_handle;
-  Screen* screen;
+  Camera* screen;
 
   static void window_resize_callback(GLFWwindow* window, int width, int height);
 };
