@@ -1,8 +1,5 @@
 #include <iostream>
 #include <Game.h>
-#include <Idiot.h>
-#include <Ally.h>
-#include "Text.h"
 
 void initialize();
 void finalize();
