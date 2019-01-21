@@ -19,3 +19,6 @@ Camera* Engine::getCamera() {
 GLFWInput* Engine::getInput() {
   return &input;
 }
+ModelDatabase* Engine::getModelDatabase() {
+  return &model_database;
+}

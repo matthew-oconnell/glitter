@@ -31,9 +31,9 @@ Game::Game(std::string title)
   auto shoot = [this](std::shared_ptr<Player::Bullet> b){
     bullets.emplace_back(b);
   };
-  auto player_one = std::make_shared<Glitter::Player::Ally>(resource_manager,engine.getInput(), engine.getCamera(), shoot);
+  auto player_one = std::make_shared<Glitter::Player::Ally>(engine.getModelDatabase(),engine.getInput(), engine.getCamera(), shoot);
   std::cout << "Trying to create player one." << std::endl;
-  player_one->setModel(std::make_shared<Glitter::Graphics::Texture>(resource_manager,"assets/textures/ufo.png", 1.0f, 1.0f));
+  player_one->setModel(std::make_shared<Glitter::Graphics::Texture>(engine.getModelDatabase(),"assets/textures/ufo.png", 1.0f, 1.0f));
   player_one->setWorldLocation({5.0f, 5.0f});
   addAlly(player_one);
 }
@@ -125,8 +125,8 @@ void Game::spawnPowerUps(std::chrono::milliseconds game_time) {
   static std::chrono::milliseconds last_spawned;
   auto elapsed_time_since_last_spawned = (game_time.count() - last_spawned.count()) / 1000.0;
   if(elapsed_time_since_last_spawned > spawn_rate_in_seconds) {
-    auto power_up = std::make_shared<Player::PowerUp>(resource_manager, Math::Vec2d{10.0f,10.0f});
-    auto model = std::make_shared<Graphics::Texture>(resource_manager, "assets/textures/bullet.png", 1.0f, 1.0f);
+    auto power_up = std::make_shared<Player::PowerUp>(engine.getModelDatabase(), Math::Vec2d{10.0f,10.0f});
+    auto model = std::make_shared<Graphics::Texture>(engine.getModelDatabase(), "assets/textures/bullet.png", 1.0f, 1.0f);
     power_up->setModel(model);
     power_ups.push_back(power_up);
     last_spawned = game_time;
@@ -137,7 +137,7 @@ void Game::spawnRandomEnemy() {
   static std::mt19937 gen(rd());
   auto enemy = std::make_shared<Player::Enemy>(engine.getCamera());
   enemy->setHealth(2);
-  enemy->setModel(std::make_shared<Graphics::Texture>(resource_manager,"assets/textures/enemy.png", 0.4f, 0.4f));
+  enemy->setModel(std::make_shared<Graphics::Texture>(engine.getModelDatabase(),"assets/textures/enemy.png", 0.4f, 0.4f));
   auto [lo, hi] = engine.getCamera()->rangeInWorldCoordinates();
   std::uniform_real_distribution y_distribution(lo.y, hi.y);
   auto spawn_location = Math::Vec2d{hi.x, float(y_distribution(gen))};
@@ -243,7 +243,7 @@ void Game::playerDies(Player::Ally* p) {
   clearAllEnemies();
   clearAllPowerUps();
   score = 0;
-  auto w = std::make_shared<Player::SingleShooter>(resource_manager);
+  auto w = std::make_shared<Player::SingleShooter>(engine.getModelDatabase());
   w->putBulletsHere([this](std::shared_ptr<Player::Bullet> b){bullets.push_back(b);});
   p->equipWeapon(w);
 }

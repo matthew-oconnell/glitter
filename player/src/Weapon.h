@@ -12,21 +12,21 @@ namespace Glitter {
 namespace Player {
 class Weapon {
  public:
-  inline Weapon(Utilities::ResourceManager& rm) : resource_manager(rm),
-                                                  fire_bullets_here(nullptr){
+  inline Weapon(ModelDatabase* rm) : resource_manager(rm),
+                                     fire_bullets_here(nullptr){
   }
   virtual void shoot(const Math::Vec2d& world_location) = 0;
   inline void putBulletsHere(std::function<void(std::shared_ptr<Bullet>)> here) {
     fire_bullets_here = std::move(here);
   }
  protected:
-  Utilities::ResourceManager& resource_manager;
+  ModelDatabase* resource_manager;
   std::function<void(std::shared_ptr<Bullet>)> fire_bullets_here;
 };
 
 class SingleShooter : public Weapon {
  public:
-  inline SingleShooter(Utilities::ResourceManager& rm): Weapon(rm) {
+  inline SingleShooter(ModelDatabase* rm): Weapon(rm) {
     damage = 1;
     time_last_shot = std::chrono::system_clock::from_time_t(0);
   }

@@ -4,16 +4,14 @@
 #include <GL/glew.h>
 
 namespace Glitter {
-namespace Utilities {
-class ResourceManager {
+class ModelDatabase {
  public:
-  ResourceManager() = default;
+  ModelDatabase() = default;
   void loadTexture(std::string filename, unsigned int width, unsigned int height);
   GLuint getTextureHandle(std::string filename);
  private:
   std::map<std::string, GLuint> textures;
 };
-}
 }
 
 

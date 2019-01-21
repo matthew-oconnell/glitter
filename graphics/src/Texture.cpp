@@ -10,10 +10,11 @@
 #include <glm/gtx/string_cast.hpp>
 #include <glDebug.h>
 #include "Texture.h"
+#include <ModelDatabase.h>
 using namespace Glitter;
 using namespace Glitter::Graphics;
 
-Texture::Texture(Utilities::ResourceManager& rm, std::string filename, float model_height, float model_width) :
+Texture::Texture(ModelDatabase* rm, std::string filename, float model_height, float model_width) :
         resource_manager(rm),
         half_width(0.5f*model_height), half_height(0.5f*model_width),
         shader("assets/shaders/quad.vert", "assets/shaders/quad.frag") {
@@ -53,8 +54,8 @@ void Texture::initializeVertexData() {
 }
 
 GLuint Texture::getTexture(std::string filename){
-  resource_manager.loadTexture(filename, width, height);
-  return resource_manager.getTextureHandle(filename);
+  resource_manager->loadTexture(filename, width, height);
+  return resource_manager->getTextureHandle(filename);
 }
 void Texture::render(Glitter::Math::Vec2d world_location, Glitter::Camera *s) {
 

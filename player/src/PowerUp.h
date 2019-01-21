@@ -6,7 +6,7 @@ namespace Glitter {
 namespace Player {
 class PowerUp {
  public:
-  inline PowerUp(Utilities::ResourceManager& rm, const Math::Vec2d& world_loc) : resource_manager(rm), world_location(world_loc){}
+  inline PowerUp(ModelDatabase* rm, const Math::Vec2d& world_loc) : resource_manager(rm), world_location(world_loc){}
   inline void powerUp(Ally* p, std::function<void(std::shared_ptr<Bullet>)> fire_bullets_here){
     auto w = std::make_shared<SingleShooter>(resource_manager);
     w->setDamage(2);
@@ -32,7 +32,7 @@ class PowerUp {
     return alive;
   }
  protected:
-  Utilities::ResourceManager& resource_manager;
+  ModelDatabase* resource_manager;
   Math::Vec2d world_location;
   std::shared_ptr<Graphics::Model> model;
   bool alive = true;

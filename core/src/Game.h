@@ -37,7 +37,6 @@ class Game {
   std::string name;
   Engine engine;
   Text text;
-  Utilities::ResourceManager resource_manager;
   unsigned int score = 0;
   unsigned int high_score = 0;
   std::chrono::system_clock::time_point game_start;

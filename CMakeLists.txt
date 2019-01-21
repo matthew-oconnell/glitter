@@ -16,7 +16,6 @@ add_subdirectory(third-party/soloud)
 add_executable(UnitTests AllTests.cpp)
 target_link_libraries(UnitTests PRIVATE Catch2::Catch2)
 
-add_subdirectory(utils)
 add_subdirectory(player)
 add_subdirectory(math)
 add_subdirectory(camera)
@@ -28,8 +27,7 @@ add_subdirectory(core)
 add_executable(Game game.cpp)
 target_include_directories(Game PRIVATE ${GLEW_INCLUDE_DIRS} )
 target_link_libraries(Game PRIVATE
-        Glitter::Core
-        Glitter::Utilities
+        Glitter::Engine
         Glitter::Graphics
         Glitter::Text
         ${OPENGL_LIBRARIES})

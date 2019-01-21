@@ -1,8 +1,8 @@
-#include "ResourceManager.h"
+#include "ModelDatabase.h"
 #include <vector>
 #include <glDebug.h>
 #include <lodepng.h>
-void Glitter::Utilities::ResourceManager::loadTexture(std::string filename, unsigned int width, unsigned int height) {
+void Glitter::ModelDatabase::loadTexture(std::string filename, unsigned int width, unsigned int height) {
   if(textures.count(filename))
     return;
   std::vector<unsigned char> image;
@@ -48,6 +48,6 @@ void Glitter::Utilities::ResourceManager::loadTexture(std::string filename, unsi
 
   textures[filename] = texture_handle;
 }
-GLuint Glitter::Utilities::ResourceManager::getTextureHandle(std::string filename) {
+GLuint Glitter::ModelDatabase::getTextureHandle(std::string filename) {
   return textures.at(filename);
 }

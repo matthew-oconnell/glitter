@@ -4,7 +4,7 @@
 using namespace Glitter;
 using namespace Player;
 
-Ally::Ally(Utilities::ResourceManager& rm, Input* input, Camera* screen_in, std::function<void(std::shared_ptr<Bullet>)> s)
+Ally::Ally(ModelDatabase* rm, Input* input, Camera* screen_in, std::function<void(std::shared_ptr<Bullet>)> s)
         :resource_manager(rm), input(input), screen(screen_in), weapon(std::make_shared<SingleShooter>(rm)) {
   weapon->putBulletsHere(s);
 }
