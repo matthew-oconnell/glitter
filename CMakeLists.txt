@@ -11,6 +11,7 @@ add_subdirectory(third-party/glew-2.1.0/build/cmake)
 add_subdirectory(third-party/LodePNG)
 add_subdirectory(third-party/freetype-2.9.1)
 add_subdirectory(third-party/glm/glm)
+add_subdirectory(third-party/soloud)
 
 add_executable(UnitTests AllTests.cpp)
 target_link_libraries(UnitTests PRIVATE Catch2::Catch2)
