@@ -8,7 +8,11 @@ void Glitter::Utilities::ResourceManager::loadTexture(std::string filename, unsi
   std::vector<unsigned char> image;
   GLuint texture_handle;
   unsigned error = lodepng::decode(image, width, height, filename);
-  if(error != 0) {throw std::logic_error(lodepng_error_text(error));}
+  if(error != 0) {
+    printf("ERROR: %s\n", lodepng_error_text(error));
+    abort();
+  }
+
 
   size_t u2, v2;
   u2 = 1; while(u2 < width) u2 *= 2;

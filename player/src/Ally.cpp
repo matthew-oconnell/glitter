@@ -36,7 +36,8 @@ void Ally::shoot() {
   if(! input->pressed(Input::SPACE)) return;
   if(weapon == nullptr)
     printf("Ally has no weapon equipped\n");
-  weapon->shoot(world_location);
+  else
+    weapon->shoot(world_location);
 }
 void Ally::equipWeapon(std::shared_ptr<Weapon> w) {
   weapon = std::move(w);

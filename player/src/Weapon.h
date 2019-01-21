@@ -40,7 +40,7 @@ class SingleShooter : public Weapon {
     if(elapsed > cooldown_in_ms){
       Math::Vec2d direction = {1.0f, 0.0f};
       auto bullet = std::make_shared<Bullet>(world_location, direction, bullet_speed, damage);
-      auto model = std::make_shared<Graphics::Texture>(resource_manager, "assets/bullet.png", 0.1f, 0.1f);
+      auto model = std::make_shared<Graphics::Texture>(resource_manager, "assets/textures/bullet.png", 0.1f, 0.1f);
       bullet->setModel(model);
       fire_bullets_here(bullet);
       time_last_shot = now;
