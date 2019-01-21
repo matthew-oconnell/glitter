@@ -31,14 +31,11 @@ class Game {
   void addEnemy(std::shared_ptr<Player::Enemy> e);
   void update();
   bool closed();
-  GLFWInput* getInput();
   Engine* getEngine();
   void clear();
  private:
   std::string name;
   Engine engine;
-  GlewContext glew_context;
-  std::shared_ptr<GLFWInput> input;
   Text text;
   Utilities::ResourceManager resource_manager;
   unsigned int score = 0;

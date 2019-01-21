@@ -1,10 +1,13 @@
 #include "Engine.h"
 using namespace Glitter;
 
-
 Engine::Engine():
     camera(),
-    window(&camera, "Glitter") {
+    window(&camera, "Glitter"),
+    glew_context(),
+    input(window.getGLFWHandle()){
+
+  glfwSetWindowUserPointer(getWindow()->getGLFWHandle(), (void*)this);
 }
 
 Window* Engine::getWindow() {
@@ -12,4 +15,7 @@ Window* Engine::getWindow() {
 }
 Camera* Engine::getCamera() {
   return &camera;
+}
+GLFWInput* Engine::getInput() {
+  return &input;
 }

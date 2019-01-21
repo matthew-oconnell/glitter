@@ -16,7 +16,7 @@ void GLAPIENTRY MessageCallback( GLenum source,
            type, severity, message );
 }
 
-Glitter::Core::GlewContext::GlewContext() {
+Glitter::GlewContext::GlewContext() {
   printf("Initializing Glew...\n"); fflush(stdout);
   glewExperimental = GL_TRUE;
   if( glewInit() != GLEW_OK){

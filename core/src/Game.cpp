@@ -21,10 +21,7 @@ using namespace Core;
 
 Game::Game(std::string title)
     : name(std::move(title)),
-      engine(),
-      glew_context(),
-      input(std::make_shared<GLFWInput>(engine.getWindow()->getGLFWHandle())){
-  glfwSetWindowUserPointer(engine.getWindow()->getGLFWHandle(), (void*)this);
+      engine(){
   game_start = std::chrono::system_clock::now();
   float pixels_per_meter = 90.0f;
   engine.getCamera()->setPixelsPerMeter(pixels_per_meter);
@@ -34,7 +31,7 @@ Game::Game(std::string title)
   auto shoot = [this](std::shared_ptr<Player::Bullet> b){
     bullets.emplace_back(b);
   };
-  auto player_one = std::make_shared<Glitter::Player::Ally>(resource_manager,getInput(), engine.getCamera(), shoot);
+  auto player_one = std::make_shared<Glitter::Player::Ally>(resource_manager,engine.getInput(), engine.getCamera(), shoot);
   std::cout << "Trying to create player one." << std::endl;
   player_one->setModel(std::make_shared<Glitter::Graphics::Texture>(resource_manager,"assets/textures/ufo.png", 1.0f, 1.0f));
   player_one->setWorldLocation({5.0f, 5.0f});
@@ -73,9 +70,6 @@ bool Game::closed() {
 }
 void Game::clear() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
-GLFWInput* Game::getInput() {
-  return input.get();
 }
 void Game::loop() {
 

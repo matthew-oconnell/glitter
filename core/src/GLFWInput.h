@@ -5,7 +5,6 @@
 #include <Input.h>
 
 namespace Glitter{
-namespace Core {
  class GLFWInput : public Player::Input {
  public:
   GLFWInput(GLFWwindow* window);
@@ -27,7 +26,6 @@ namespace Core {
 
    unsigned int mapToGLFWKeycode(Player::Input::KEYS k) const;
 };
-}
 }
 
 
