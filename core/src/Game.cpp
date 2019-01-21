@@ -4,7 +4,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
-#include "Engine.h"
+#include "Game.h"
 #include "GLFWInput.h"
 #include <Shader.h>
 #include <cmath>
@@ -19,7 +19,7 @@
 using namespace Glitter;
 using namespace Core;
 
-Engine::Engine(std::string title)
+Game::Game(std::string title)
     : name(std::move(title)),
       screen(),
       window(std::make_shared<Window>(&screen, name)),
@@ -53,7 +53,7 @@ void eraseDead(std::vector<std::shared_ptr<Killable>>& killables){
   }
 }
 
-void Engine::update() {
+void Game::update() {
   for(auto& e : enemies)
     e->update();
   for(auto& p : allies)
@@ -69,16 +69,16 @@ void Engine::update() {
   }
   window->update();
 }
-bool Engine::closed() {
+bool Game::closed() {
   return window->closed();
 }
-void Engine::clear() {
+void Game::clear() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
-GLFWInput* Engine::getInput() {
+GLFWInput* Game::getInput() {
   return input.get();
 }
-void Engine::loop() {
+void Game::loop() {
 
   Graphics::Shader text_shader("assets/shaders/text.vert", "assets/shaders/text.frag");
   auto [width, height] = window->getWidthAndHeight();
@@ -115,13 +115,13 @@ void Engine::loop() {
 //    text.renderText(text_shader,"FPS: " + fps_string, 900.0f, 25.0f, 0.5f, {0.5f,0.8f,0.2f,1.0f});
   }
 }
-Window* Engine::getWindow() {
+Window* Game::getWindow() {
   return window.get();
 }
-void Engine::addAlly(std::shared_ptr<Player::Ally> p) {
+void Game::addAlly(std::shared_ptr<Player::Ally> p) {
     allies.emplace_back(std::move(p));
 }
-void Engine::spawnEnemies(std::chrono::milliseconds game_time) {
+void Game::spawnEnemies(std::chrono::milliseconds game_time) {
   double spawn_rate_in_seconds = 1.0;
   static std::chrono::milliseconds last_enemy_spawned;
   auto elapsed_time_since_last_enemy_in_seconds = (game_time.count() - last_enemy_spawned.count()) / 1000.0;
@@ -130,7 +130,7 @@ void Engine::spawnEnemies(std::chrono::milliseconds game_time) {
     last_enemy_spawned = game_time;
   }
 }
-void Engine::spawnPowerUps(std::chrono::milliseconds game_time) {
+void Game::spawnPowerUps(std::chrono::milliseconds game_time) {
   double spawn_rate_in_seconds = 5.0;
   static std::chrono::milliseconds last_spawned;
   auto elapsed_time_since_last_spawned = (game_time.count() - last_spawned.count()) / 1000.0;
@@ -142,7 +142,7 @@ void Engine::spawnPowerUps(std::chrono::milliseconds game_time) {
     last_spawned = game_time;
   }
 }
-void Engine::spawnRandomEnemy() {
+void Game::spawnRandomEnemy() {
   static std::random_device rd;
   static std::mt19937 gen(rd());
   auto enemy = std::make_shared<Player::Enemy>(&screen);
@@ -155,10 +155,10 @@ void Engine::spawnRandomEnemy() {
   enemy->setTarget(allies.front().get());
   addEnemy(enemy);
 }
-void Engine::addEnemy(std::shared_ptr<Player::Enemy> e) {
+void Game::addEnemy(std::shared_ptr<Player::Enemy> e) {
   enemies.emplace_back(e);
 }
-void Engine::collidePlayersWithEnemies() {
+void Game::collidePlayersWithEnemies() {
   for(auto& p : allies) {
     for (auto &e : enemies) {
       if(e->isAlive()) {
@@ -170,19 +170,19 @@ void Engine::collidePlayersWithEnemies() {
     }
   }
 }
-bool Engine::collide(Player::Player *p, Player::Player *e) {
+bool Game::collide(Player::Player *p, Player::Player *e) {
   auto p_bounds = p->getBoundsWorld();
   auto e_bounds = e->getBoundsWorld();
   return Math::AABB::intersect(e_bounds, p_bounds);
 }
-void Engine::render() {
+void Game::render() {
   clear();
   drawEnemies();
   drawBullets();
   drawPlayers();
   drawPowerUps();
 }
-void Engine::drawPlayers() {
+void Game::drawPlayers() {
   for(auto& p : allies){
     auto [lo, hi] = p->getBoundsWorld();
     if(screen.onScreen(lo, hi)) {
@@ -190,7 +190,7 @@ void Engine::drawPlayers() {
     }
   }
 }
-void Engine::drawBullets() {
+void Game::drawBullets() {
   for(auto& b : bullets){
     auto [lo, hi] = b->getBoundsWorld();
     if(screen.onScreen(lo, hi)) {
@@ -198,25 +198,25 @@ void Engine::drawBullets() {
     }
   }
 }
-void Engine::drawEnemies() {
+void Game::drawEnemies() {
   for(auto& e : enemies){
     auto [lo, hi] = e->getBoundsWorld();
     if(screen.onScreen(lo, hi))
       e->render(&screen);
   }
 }
-void Engine::drawPowerUps() {
+void Game::drawPowerUps() {
   for(auto& u : power_ups){
     auto [lo, hi] = u->getBoundsWorld();
     if(screen.onScreen(lo, hi))
       u->render(&screen);
   }
 }
-Screen* Engine::getScreen() {
+Screen* Game::getScreen() {
   return &screen;
 }
 
-void Engine::collideBulletsWithEnemies() {
+void Game::collideBulletsWithEnemies() {
   for(auto& b : bullets){
     auto bullet_bounds = b->getBoundsWorld();
     for(auto& e : enemies){
@@ -233,7 +233,7 @@ void Engine::collideBulletsWithEnemies() {
   }
 }
 
-void Engine::collidePlayersWithPowerUps() {
+void Game::collidePlayersWithPowerUps() {
   for(auto& a : allies){
     for(auto& u : power_ups){
       if(Math::AABB::intersect(a->getBoundsWorld(), u->getBoundsWorld())){
@@ -244,13 +244,13 @@ void Engine::collidePlayersWithPowerUps() {
     }
   }
 }
-void Engine::flashScreenRed() {
+void Game::flashScreenRed() {
   glClearColor(0.7f, 0.2f, 0.2f, 0.5f);
 }
-void Engine::setScreenColorBlack() {
+void Game::setScreenColorBlack() {
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 }
-void Engine::playerDies(Player::Ally* p) {
+void Game::playerDies(Player::Ally* p) {
   p->setWorldLocation({4.0f, 4.0f});
   flashScreenRed();
   clearAllEnemies();
@@ -260,12 +260,12 @@ void Engine::playerDies(Player::Ally* p) {
   w->putBulletsHere([this](std::shared_ptr<Player::Bullet> b){bullets.push_back(b);});
   p->equipWeapon(w);
 }
-void Engine::clearAllEnemies() {
+void Game::clearAllEnemies() {
   for(auto& e : enemies){
     e->die();
   }
 }
-void Engine::clearAllPowerUps() {
+void Game::clearAllPowerUps() {
   for(auto& p : power_ups){
     p->consume();
   }

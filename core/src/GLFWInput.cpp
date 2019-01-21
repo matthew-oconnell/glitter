@@ -1,5 +1,5 @@
 #include "GLFWInput.h"
-#include "Engine.h"
+#include "Game.h"
 using namespace Glitter;
 using namespace Core;
 
@@ -15,21 +15,21 @@ GLFWInput::GLFWInput(GLFWwindow *window)
     mouse_button = false;
 }
 void GLFWInput::key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
-  auto input = static_cast<Engine*>(glfwGetWindowUserPointer(window))->getInput();
+  auto input = static_cast<Game*>(glfwGetWindowUserPointer(window))->getInput();
   if(action == GLFW_PRESS)
     input->keyboard_keys[key] = true;
   else if(action == GLFW_RELEASE)
     input->keyboard_keys[key] = false;
 }
 void GLFWInput::mouse_button_callback(GLFWwindow *window, int button, int action, int mods) {
-  auto input = static_cast<Engine*>(glfwGetWindowUserPointer(window))->getInput();
+  auto input = static_cast<Game*>(glfwGetWindowUserPointer(window))->getInput();
   if(action == GLFW_PRESS)
     input->mouse_buttons[button] = true;
   else if(action == GLFW_RELEASE)
     input->mouse_buttons[button] = false;
 }
 void GLFWInput::cursor_position_callback(GLFWwindow *window, double x, double y) {
-  auto input = static_cast<Engine*>(glfwGetWindowUserPointer(window))->getInput();
+  auto input = static_cast<Game*>(glfwGetWindowUserPointer(window))->getInput();
   input->mouse_x = (float)x;
   input->mouse_y = (float)y;
 }

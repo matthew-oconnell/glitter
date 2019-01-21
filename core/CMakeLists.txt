@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 
 set(SOURCES
-        src/Engine.h
-        src/Engine.cpp
+        src/Game.h
+        src/Game.cpp
         src/GLFWInput.cpp
         src/GLFWInput.h
         src/GlewContext.cpp src/GlewContext.h

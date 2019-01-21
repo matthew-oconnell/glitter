@@ -1,5 +1,5 @@
 #include <iostream>
-#include <Engine.h>
+#include <Game.h>
 #include <Idiot.h>
 #include <Ally.h>
 #include "Text.h"
@@ -11,7 +11,7 @@ void thankThirdParty();
 int main() {
   thankThirdParty();
   initialize();
-  Glitter::Core::Engine engine("Glitter");
+  Glitter::Core::Game engine("Glitter");
   engine.loop();
   finalize();
   return 0;

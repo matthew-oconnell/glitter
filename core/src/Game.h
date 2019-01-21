@@ -23,9 +23,9 @@ namespace Core {
 
 class GLFWInput;
 
-class Engine {
+class Game {
  public:
-  Engine(std::string title);
+  Game(std::string title);
   void loop();
   void addAlly(std::shared_ptr<Player::Ally> p);
   void addEnemy(std::shared_ptr<Player::Enemy> e);
