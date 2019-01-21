@@ -2,7 +2,6 @@
 #include "Window.h"
 #include "Game.h"
 using namespace Glitter;
-using namespace Core;
 
 Window::~Window() {
   glfwDestroyWindow(window_handle);
@@ -31,7 +30,7 @@ Window::Window(Camera* screen, std::string title)
 }
 
 void Window::window_resize_callback(GLFWwindow *window, int width, int height) {
-  auto w = static_cast<Game*>(glfwGetWindowUserPointer(window))->getEngine()->getWindow();
+  auto w = static_cast<Core::Game*>(glfwGetWindowUserPointer(window))->getEngine()->getWindow();
   w->width = width;
   w->height = height;
   w->screen->windowResize(width, height);

@@ -1,15 +1,16 @@
 #pragma once
 #include "Window.h"
+#include "Camera.h"
 
 namespace Glitter {
 class Engine {
  public:
   Engine();
-  Core::Window* getWindow();
+  Window* getWindow();
   Camera* getCamera();
  private:
-  Camera screen;
-  Core::Window window;
+  Camera camera;
+  Window window;
 };
 }
 

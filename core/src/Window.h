@@ -4,7 +4,6 @@
 #include <GLFW/glfw3.h>
 #include <Camera.h>
 namespace Glitter {
-namespace Core {
 class Window {
  public:
   Window(Camera * screen, std::string title);
@@ -22,7 +21,6 @@ class Window {
 
   static void window_resize_callback(GLFWwindow* window, int width, int height);
 };
-}
 }
 
 
