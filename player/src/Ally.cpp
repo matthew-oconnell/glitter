@@ -6,10 +6,9 @@ using namespace Glitter;
 using namespace Player;
 
 Ally::Ally(Engine* e, std::function<void(std::shared_ptr<Bullet>)> s)
-        :engine(e),
-        camera(engine->getCamera()),
-        input(engine->getInput()),
-        weapon(std::make_shared<SingleShooter>(engine->getModelDatabase())) {
+    : camera(e->getCamera()),
+      input(e->getInput()),
+      weapon(std::make_shared<SingleShooter>(e->getModelDatabase())) {
   weapon->putBulletsHere(s);
 }
 void Ally::update() {

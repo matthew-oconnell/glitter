@@ -18,7 +18,6 @@ class Ally :public Player {
   void render(Camera* s) override;
   void equipWeapon(std::shared_ptr<Weapon> w);
  private:
-  Engine* engine;
   Input* input;
   Camera* camera;
   std::shared_ptr<Weapon> weapon;
