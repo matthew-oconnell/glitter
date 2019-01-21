@@ -1,18 +1,21 @@
 #include <Texture.h>
+#include <Engine.h>
 #include "Ally.h"
 #include "Weapon.h"
 using namespace Glitter;
 using namespace Player;
 
-Ally::Ally(ModelDatabase* rm, Input* input, Camera* screen_in, std::function<void(std::shared_ptr<Bullet>)> s)
-        :resource_manager(rm), input(input), screen(screen_in), weapon(std::make_shared<SingleShooter>(rm)) {
+Ally::Ally(Engine* e, std::function<void(std::shared_ptr<Bullet>)> s)
+        :engine(e),
+        camera(engine->getCamera()),
+        input(engine->getInput()),
+        weapon(std::make_shared<SingleShooter>(engine->getModelDatabase())) {
   weapon->putBulletsHere(s);
 }
 void Ally::update() {
-  screen->rangeInWorldCoordinates();
   float speed = 0.1f;
   move(speed);
-  setWorldLocation(Math::AABB::clamp(screen->rangeInWorldCoordinates(), world_location));
+  setWorldLocation(Math::AABB::clamp(camera->rangeInWorldCoordinates(), world_location));
   shoot();
 }
 void Ally::move(float speed) {

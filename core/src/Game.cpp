@@ -31,8 +31,7 @@ Game::Game(std::string title)
   auto shoot = [this](std::shared_ptr<Player::Bullet> b){
     bullets.emplace_back(b);
   };
-  auto player_one = std::make_shared<Glitter::Player::Ally>(engine.getModelDatabase(),engine.getInput(), engine.getCamera(), shoot);
-  std::cout << "Trying to create player one." << std::endl;
+  auto player_one = std::make_shared<Glitter::Player::Ally>(&engine, shoot);
   player_one->setModel(std::make_shared<Glitter::Graphics::Texture>(engine.getModelDatabase(),"assets/textures/ufo.png", 1.0f, 1.0f));
   player_one->setWorldLocation({5.0f, 5.0f});
   addAlly(player_one);

@@ -13,14 +13,14 @@ namespace Glitter {
 namespace Player {
 class Ally :public Player {
  public:
-  Ally(ModelDatabase* rm, Input* input, Camera* screen, std::function<void(std::shared_ptr<Bullet>)> shoot_bullets_here);
+  Ally(Engine* engine, std::function<void(std::shared_ptr<Bullet>)> shoot_bullets_here);
   void update() override;
   void render(Camera* s) override;
   void equipWeapon(std::shared_ptr<Weapon> w);
  private:
-  ModelDatabase* resource_manager;
+  Engine* engine;
   Input* input;
-  Camera* screen;
+  Camera* camera;
   std::shared_ptr<Weapon> weapon;
   void move(float speed);
   void shoot();
