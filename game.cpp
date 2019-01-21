@@ -29,6 +29,16 @@ void thankThirdParty() {
                "Catch2: https://github.com/catchorg/Catch2\n"
                "\n"
                "GLFW: https://github.com/glfw/glfw"
+               "\n"
+               "OpenGL Mathematics: https://glm.g-truc.net"
+               "\n"
+               "SoLoud: http://sol.gfxile.net/soloud/"
+               "\n"
+               "FreeType: https://www.freetype.org/"
+               "\n"
+               "\n"
+               "A big thank you to all the artists that have made their assets available:"
+               "Sound Effects: www.kenney.nl"
                << std::endl;
 }
 

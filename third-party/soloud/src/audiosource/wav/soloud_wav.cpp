@@ -180,6 +180,7 @@ namespace SoLoud
 
 	result Wav::loadmp3(MemoryFile *aReader)
 	{
+		printf("attempting to load mp3\n");
 		drmp3 decoder;
 
 		if (!drmp3_init_memory(&decoder, aReader->getMemPtr(), aReader->length(), NULL))
@@ -292,13 +293,19 @@ namespace SoLoud
 
 	result Wav::load(const char *aFilename)
 	{
+		printf("attempting to load file %s\n", aFilename);
 		if (aFilename == 0)
 			return INVALID_PARAMETER;
 		stop();
 		DiskFile dr;
 		int res = dr.open(aFilename);
-		if (res == SO_NO_ERROR)
+		printf("file has been opened\n");
+		if (res == SO_NO_ERROR) {
+			printf("Going to load file\n");
 			return loadFile(&dr);
+		} {
+			printf("opened file with error %d\n", res);
+		}
 		return FILE_LOAD_FAILED;
 	}
 
@@ -315,17 +322,22 @@ namespace SoLoud
 
 	result Wav::loadFile(File *aFile)
 	{
+
+		printf("inside loadFile");
 		if (!aFile)
 			return INVALID_PARAMETER;
 		stop();
+		printf("stop");
 
 		MemoryFile mr;
 		result res = mr.openFileToMem(aFile);
+		printf("openFileToMem");
 
 		if (res != SO_NO_ERROR)
 		{
 			return res;
 		}
+		printf("before test and load\n");
 		return testAndLoadFile(&mr);
 	}
 

@@ -216,6 +216,7 @@ endif ()
 if (SOLOUD_STATIC)
 	add_library(${TARGET_NAME} STATIC ${TARGET_SOURCES})
 endif()
+add_library(soloud::soloud ALIAS soloud)
 
 target_link_libraries (${TARGET_NAME} ${LINK_LIBRARIES})
 target_include_directories(${TARGET_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
