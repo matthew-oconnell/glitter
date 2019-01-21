@@ -10,7 +10,7 @@ TEST_CASE("Camera Exists"){
   REQUIRE(!s.onScreen({-0.6f, -0.6f}, {-0.5f, -0.5f}));
 }
 
-TEST_CASE("Camera can convert from world to screen location"){
+TEST_CASE("Camera can convert from world to camera location"){
   Camera s;
   s.setPixelsPerMeter(10.0f);
   s.windowResize(200, 200);
@@ -27,7 +27,7 @@ TEST_CASE("Camera can convert from world to screen location"){
   REQUIRE(screen_location.y == 0.0);
 }
 
-TEST_CASE("Camera can convert from screen to world"){
+TEST_CASE("Camera can convert from camera to world"){
   Camera s;
   s.setPixelsPerMeter(10.0f);
   s.windowResize(200, 200);
