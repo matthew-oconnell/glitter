@@ -19,8 +19,8 @@ Window::Window(Screen* screen, std::string title)
   width = mode->width;
   height = mode->height;
   monitor = nullptr; // disable fullscreen
-  width /= 1.5;
-  height /= 1.5;
+  width = int(width / 1.5);
+  height = int(height /1.5);
   window_handle = glfwCreateWindow(width, height, title.c_str(), monitor, nullptr);
   if(window_handle == nullptr)
     throw std::logic_error("Could not create glfw window: " + title);
@@ -31,7 +31,7 @@ Window::Window(Screen* screen, std::string title)
 }
 
 void Window::window_resize_callback(GLFWwindow *window, int width, int height) {
-  auto w = static_cast<Game*>(glfwGetWindowUserPointer(window))->getWindow();
+  auto w = static_cast<Game*>(glfwGetWindowUserPointer(window))->getEngine()->getWindow();
   w->width = width;
   w->height = height;
   w->screen->windowResize(width, height);

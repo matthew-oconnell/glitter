@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "GlewContext.h"
-#include "Window.h"
+#include "Engine.h"
 
 #include <Player.h>
 #include <Screen.h>
@@ -32,13 +32,11 @@ class Game {
   void update();
   bool closed();
   GLFWInput* getInput();
-  Window* getWindow();
-  Screen* getScreen();
+  Engine* getEngine();
   void clear();
  private:
   std::string name;
-  Screen screen;
-  std::shared_ptr<Window> window;
+  Engine engine;
   GlewContext glew_context;
   std::shared_ptr<GLFWInput> input;
   Text text;

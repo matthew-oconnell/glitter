@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 
 set(SOURCES
+        src/Engine.cpp
+        src/Engine.h
         src/Game.h
         src/Game.cpp
         src/GLFWInput.cpp
